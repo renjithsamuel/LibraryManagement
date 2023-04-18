@@ -22,7 +22,7 @@ exports.getBooks = async (req,res,next) => {
     exports.postBooks = async (req,res,next) =>{
         // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
         console.log(req.body);
-        if(req.body.title == null || req.body.author == null || req.body.subject == null || req.body.publishDate == null){
+        if(req.body.title == null || req.body.author == null || req.body.subject == null || req.body.publishDate == null || req.book.desc == null){
             return res.status(400).send("Send correct values");
         }
         try{
@@ -54,7 +54,7 @@ exports.getBooks = async (req,res,next) => {
       
         // Check if all book objects have the required properties
         const invalidBooks = req.body.filter(book => (
-          book.title == null || book.author == null || book.subject == null || book.publishDate == null
+          book.title == null || book.author == null || book.subject == null || book.publishDate == null || book.desc == null
         ));
         if (invalidBooks.length > 0) {
           return res.status(400).send("Send valid book objects");

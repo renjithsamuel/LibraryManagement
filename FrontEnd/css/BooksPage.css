@@ -144,6 +144,7 @@ height: auto;
 padding: 5vh;
 display: flex;
 flex-wrap: wrap;
+gap: 25px;
 justify-self: center;
 align-self: center;
 border-radius: var(--border-radius);
@@ -202,8 +203,9 @@ text-align: center;
 text-overflow: clip;
 word-wrap: break-word;
 font-size: small;
-height: 5vh;
-width: 90%;
+height: auto;
+width: 87%;
+padding: 8px;
 border-radius: var(--border-radius);
 }
 
@@ -213,8 +215,9 @@ text-overflow: clip;
 text-align: center;
 word-wrap: break-word;
 font-size: small;
-height: 5vh;
-width: 90%;
+height: auto;
+width: 87%;
+padding: 8px;
 border-radius: var(--border-radius);
 }
 
@@ -225,8 +228,9 @@ text-align: center;
 word-wrap: break-word;
 font-size: small;
 overflow: hidden;
-height: 5vh;
-width: 90%;
+height: auto;
+width: 87%;
+padding: 8px;
 border-radius: var(--border-radius);
 }
 
@@ -241,11 +245,53 @@ padding: 5px;
 }
 
 .subject{
-background-color: #d8d8d8;
-padding: 3px;
+  background-color: aliceblue;
+  padding: 3px;
+  text-align: center;
+  word-wrap: break-word;
+  font-size: small;
+  overflow: hidden;
+  height: auto;
+  width: 87%;
+  padding: 8px;
+  border-radius: var(--border-radius);
+}
+
+.desc{
+  background-color: #d8d8d8;
+padding: 5px;
+font-size: small;
 text-align: justify;
 word-wrap: break-word;
 width: 96%;
 border-radius: var(--border-radius);
-padding: 5px;
+padding: 15px;
+text-overflow: ellipsis;
+overflow: auto;
+height: auto;
+}
+
+
+::-webkit-scrollbar {
+  width: 3px;
+  border-radius: 30px;
+  display: none;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #353535;
+  border-radius: 30px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 30px;
+    transition: all 0.5s ease;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

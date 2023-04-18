@@ -68,11 +68,14 @@ function createCard(book){
           <div class="publishdate">
           ${book.publishDate}
           </div>
+          <div class="subject">
+          ${book.subject}
+          </div>
       </div>
   </div>
   <div class="bookdown">
-      <div class="subject">
-      ${book.subject}
+      <div class="desc">
+      ${book.desc}
       </div>
   </div>
   </div>`
