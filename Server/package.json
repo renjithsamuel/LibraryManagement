@@ -1,0 +1,20 @@
+{
+  "name": "librarymanagement",
+  "version": "1.0.0",
+  "description": "A simple library management page",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "library"
+  ],
+  "author": "renjithsamuel",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "helmet": "^6.1.5",
+    "mongoose": "^7.0.4"
+  }
+}
