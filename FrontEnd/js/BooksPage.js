@@ -53,36 +53,32 @@ function displayBooks(books) {
 
 function createCard(book){
   const bookElement = document.createElement('div');
-  bookElement.setAttribute('class', 'book');
-  const bookTitle = document.createElement('h3');
-  bookTitle.innerText = book.title;
-  bookElement.appendChild(bookTitle);
-  const bookAuthor = document.createElement('p');
-  bookAuthor.setAttribute('class', 'book-author');
-  const authorLabel = document.createElement('strong');
-  authorLabel.innerText = 'Author:';
-  bookAuthor.appendChild(authorLabel);
-  bookAuthor.appendChild(document.createTextNode(` ${book.author}`));
-  bookElement.appendChild(bookAuthor);
-
-  const bookSubject = document.createElement('p');
-  bookSubject.setAttribute('class', 'book-subject');
-  const subjectLabel = document.createElement('strong');
-  subjectLabel.innerText = 'Subject:';
-  bookSubject.appendChild(subjectLabel);
-  bookSubject.appendChild(document.createTextNode(` ${book.subject}`));
-  bookElement.appendChild(bookSubject);
-
-  const bookPublishDate = document.createElement('p');
-  bookPublishDate.setAttribute('class', 'book-publish-date');
-  const dateLabel = document.createElement('strong');
-  dateLabel.innerText = 'Publish Date:';
-  bookPublishDate.appendChild(dateLabel);
-  bookPublishDate.appendChild(document.createTextNode(` ${book.publishDate}`));
-  bookElement.appendChild(bookPublishDate);
-
+  bookElement.innerHTML = `  <div class="bookelement">
+  <div class="booktop">
+      <div class="bookimage">
+          <img src="../assets/book.svg" height="100vh" width="100vw">
+      </div>
+      <div class="smallinfo">
+          <div class="title">
+          ${book.title}
+          </div>
+          <div class="author">
+          ${book.author}
+          </div>
+          <div class="publishdate">
+          ${book.publishDate}
+          </div>
+      </div>
+  </div>
+  <div class="bookdown">
+      <div class="subject">
+      ${book.subject}
+      </div>
+  </div>
+  </div>`
   bookList.appendChild(bookElement);
 }
+
 
 
 fetchBooks();
