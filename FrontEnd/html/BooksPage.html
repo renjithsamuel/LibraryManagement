@@ -7,8 +7,9 @@
   <title>Library Management</title>
   <link rel="stylesheet" href="../css/BooksPage.css">
       <!-- assets for icon logo -->
-    <!-- <link rel = "icon" href = "./assets/images/logoicon.png" type = "image/x-icon"> -->
-    
+    <link rel = "icon" href = "../assets/library-logo-2.svg" type = "image/x-icon">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 </head>
@@ -20,7 +21,7 @@
         </div>
         <div class="navright">
             <div class="navicon">
-
+              <img src="../assets/user-circle.svg" alt="user" height="50vh" width="50vh">
             </div>
         </div>
     </nav>
@@ -31,12 +32,22 @@
         <div class="sloganleft">
             “A world without books is like a world without sunshine”
         </div>
-        <div class="showres">
-            Showing results for 
-            <div class="filterforsearch">
-
+        <div class="showreswrapper">
+          <div class="showres">
+            Showing results 0 from
+          </div>
+          <div class="filterforsearch">
+            <div class="dropdown">
+              <button class="dropbtn">All</button>
+              <div class="dropdown-content">
+                <a href="#">Title</a>
+                <a href="#">Author</a>
+                <a href="#">Date</a>
+                <a href="#">Subject</a>
+              </div>
             </div>
         </div>
+</div>
     </div>
     
     <div class="filterright">
@@ -44,7 +55,8 @@
 
         </div>
         <div class="searchbox">
-
+          <input placeholder="Search" id="myInput">
+          <i class="fa-solid fa-magnifying-glass"></i>
         </div>
     </div>
 

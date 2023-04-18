@@ -2,7 +2,6 @@ const bookList = document.getElementById('book-list');
 let getBooksurl = "http://localhost:3000/api/v1/books";
 let postBooksUrl = "http://localhost:3000/api/v1/books";
 let currentPage = 1;
-
 const sendHttpRequest = async (method, url, data) => {
     let returndata;
     await fetch(url, {    
@@ -52,6 +51,18 @@ function displayBooks(books) {
 }
 
 function createCard(book){
+  var date = new Date(book.publishDate); // Parse the string date into a date object
+
+  let newdate = '';
+  if (date) {
+      const day = date.toLocaleDateString('en-US', {
+          day: 'numeric',});
+      const month = date.toLocaleDateString('en-US', {
+          month: 'short',});
+      const year = date.toLocaleDateString('en-US', {
+          year: 'numeric',});
+      newdate = day+" "+month+" "+year;
+  }
   const bookElement = document.createElement('div');
   bookElement.innerHTML = `  <div class="bookelement">
   <div class="booktop">
@@ -66,7 +77,7 @@ function createCard(book){
           ${book.author}
           </div>
           <div class="publishdate">
-          ${book.publishDate}
+          ${newdate}
           </div>
           <div class="subject">
           ${book.subject}
@@ -119,3 +130,21 @@ fetchBooks();
 //     console.error(error.message);
 //   }
 // }
+
+// search
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#book-list .bookelement").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+  let currLen = 0;
+  function updateRes() {  
+     currLen = $("#book-list .bookelement").length;
+  $(".showres").html("Showing results " + currLen + " from ");
+  }
+
+  setInterval(updateRes, 100);
+});
