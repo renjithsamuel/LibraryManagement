@@ -63,7 +63,7 @@ function createCard(book){
   bookElement.innerHTML = `  <div class="bookelement">
   <div class="booktop">
       <div class="bookimage">
-          <img src="../assets/book.svg" height="100vh" width="100vw">
+          <img src="./assets/book.svg" height="100vh" width="100vw">
       </div>
       <div class="smallinfo">
           <div class="title">
