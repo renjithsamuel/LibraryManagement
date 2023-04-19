@@ -1,10 +1,10 @@
-const Book = require('../models/book');
+const Books = require('../models/book');
 
 
 exports.getBooks = async (req,res,next) => {
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     try{
-        const books = await Book.find();
+        const books = await Books.find();
         // console.log(expenses);
         return res.status(200).json({
             success :true,
@@ -26,7 +26,7 @@ exports.getBooks = async (req,res,next) => {
             return res.status(400).send("Send correct values");
         }
         try{
-        let books = await Book.collection.insertOne(req.body);
+        let books = await Books.collection.insertOne(req.body);
         if(!books){
             return res.status(400).json({
                 success : false,
@@ -61,7 +61,7 @@ exports.getBooks = async (req,res,next) => {
         }
       
         try {
-          let result = await Book.collection.insertMany(req.body);
+          let result = await Books.collection.insertMany(req.body);
           if (!result || result.insertedCount !== req.body.length) {
             return res.status(400).json({
               success: false,

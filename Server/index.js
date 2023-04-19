@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect('mongodb://0.0.0.0:27017/Library', {
+mongoose.connect('mongodb+srv://ranjithsamuelking:Samking123@cluster0.gp8dend.mongodb.net/Library?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
