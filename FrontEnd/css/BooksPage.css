@@ -12,7 +12,9 @@
 background-color: var(--neutral-color);
 } */
 *{
+  scroll-behavior: smooth;
 font-family: 'Poppins';
+transition: all 0.3s ease;
 }
 
 body{
@@ -336,8 +338,8 @@ height: auto;
 
 
 
-
-.dropbtn {
+/* DROPDOWN 1 */
+.filterforsearch .dropbtn {
   background-color: var(--accent-color);
   color: black;
   justify-content: center;
@@ -351,7 +353,7 @@ height: auto;
 }
 
 
-.dropdown {
+.filterforsearch .dropdown {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -363,8 +365,7 @@ height: auto;
   border-radius: var(--border-radius);
 }
 
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
+.filterforsearch .dropdown-content {
   display: none;
   justify-content: center;
   align-items: center;
@@ -378,8 +379,7 @@ height: auto;
   border-radius: var(--border-radius);
 }
 
-/* Links inside the dropdown */
-.dropdown-content a {
+.filterforsearch .dropdown-content a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -394,17 +394,83 @@ height: auto;
   border-radius: var(--border-radius);
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
+.filterforsearch .dropdown-content a:hover {
   background-color: var(--secondary-color);
   
 }
+.filterforsearch .dropdown:hover .dropdown-content {display: block;}
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
+.filterforsearch .dropdown:hover .dropbtn {
+  background-color: var(--primary-color);
+  color: white;
+}
 
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
+
+
+
+/* DROPDOWN 2 */
+.sortbox .dropbtn {
+  background-color: var(--accent-color);
+  color: black;
+  justify-content: center;
+  align-items: center;
+  height: 6vh;
+  width: 10vw;
+  font-size: 15px;
+  border: none;
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+}
+
+
+.sortbox .dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+  align-self: center;
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border-radius: var(--border-radius);
+}
+
+.sortbox .dropdown-content {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  background-color: var(--body-color);
+  width: 10vw;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  transition: all 0.3s ease;
+  border-radius: var(--border-radius);
+}
+
+.sortbox .dropdown-content a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  font-size: medium;
+  color: black;
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s ease;
+  border-radius: var(--border-radius);
+}
+
+.sortbox .dropdown-content a:hover {
+  background-color: var(--secondary-color);
+  
+}
+.sortbox .dropdown:hover .dropdown-content {display: block;}
+
+.sortbox .dropdown:hover .dropbtn {
   background-color: var(--primary-color);
   color: white;
 }

@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
   <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 </head>
-<body onload="fetchBooks()">
+<body onload="">
   <header>
     <nav>
         <div class="navleft">
@@ -40,20 +40,31 @@
             <div class="dropdown">
               <button class="dropbtn">All</button>
               <div class="dropdown-content">
-                <a href="#">Title</a>
-                <a href="#">Author</a>
-                <a href="#">Date</a>
-                <a href="#">Subject</a>
+                <a href="#" data-sortby="all">All</a>
+                <a href="#" data-sortby="title">Title</a>
+                <a href="#" data-sortby="author">Author</a>
+                <a href="#" data-sortby="date">Date</a>
+                <a href="#" data-sortby="subject">Subject</a>
+                <a href="#" data-sortby="description">Description</a>
               </div>
             </div>
         </div>
-</div>
+    </div>
     </div>
     
     <div class="filterright">
-        <div class="sortbox">
-
-        </div>
+              <div class="sortbox">
+                <div class="dropdown">
+                  <button class="dropbtn">Sort</button>
+                  <div class="dropdown-content">
+                    <a href="#" data-sortby="all">Reset</a>
+                    <a href="#" data-sortby="title">Title</a>
+                    <a href="#" data-sortby="author">Author</a>
+                    <a href="#" data-sortby="date">Date</a>
+                    <a href="#" data-sortby="subject">Subject</a>
+                  </div>
+                </div>
+              </div>
         <div class="searchbox">
           <input placeholder="Search" id="myInput">
           <i class="fa-solid fa-magnifying-glass"></i>

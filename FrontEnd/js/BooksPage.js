@@ -2,6 +2,7 @@ const bookList = document.getElementById('book-list');
 let getBooksurl = "http://localhost:3000/api/v1/books";
 let postBooksUrl = "http://localhost:3000/api/v1/books";
 let currentPage = 1;
+
 const sendHttpRequest = async (method, url, data) => {
     let returndata;
     await fetch(url, {    
@@ -34,14 +35,9 @@ async function fetchBooks() {
     }
   }
 
-window.addEventListener('scroll', () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-    currentPage += 10;
-    fetchBooks({ page: currentPage });
-  }
-});
 
 
+fetchBooks();
 function displayBooks(books) {
   console.log(books);
   bookList.innerHTML = ''; // clear the book list before displaying new books
@@ -49,6 +45,7 @@ function displayBooks(books) {
     createCard(book);
   });
 }
+
 
 function createCard(book){
   var date = new Date(book.publishDate); // Parse the string date into a date object
@@ -95,56 +92,140 @@ function createCard(book){
 
 
 
-fetchBooks();
-
-// async function fetchBookCount({ title, author, subject, publishDate } = {}) {
-//     const queryParams = new URLSearchParams();
-//     if (title) queryParams.append('title', title);
-//     if (author) queryParams.append('author', author);
-//     if (subject) queryParams.append('subject', subject);
-//     if (publishDate) queryParams.append('publishDate', publishDate);
-  
-//     try {
-//       const response = await fetch(`http://localhost:3000/books/count?${queryParams}`);
-//       const { count } = await response.json();
-//       console.log(`Book count: ${count}`);
-//     } catch (error) {
-//       console.error(error.message);
-//     }
-//   }
-
-
-// async function fetchBooks({ title, author, subject, publishDate, page } = {}) {
-//   const queryParams = new URLSearchParams();
-//   if (title) queryParams.append('title', title);
-//   if (author) queryParams.append('author', author);
-//   if (subject) queryParams.append('subject', subject);
-//   if (publishDate) queryParams.append('publishDate', publishDate);
-//   if (page) queryParams.append('page', page);
-
-//   try {
-//     const response = await fetch(`http://localhost:3000/books?${queryParams}`);
-//     const books = await response.json();
-//     displayBooks(books);
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// }
-
 // search
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#book-list .bookelement").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      let newLen=0;
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+
     });
   });
-
-  let currLen = 0;
-  function updateRes() {  
-     currLen = $("#book-list .bookelement").length;
-  $(".showres").html("Showing results " + currLen + " from ");
-  }
-
-  setInterval(updateRes, 100);
 });
+
+//sorting
+function sortByTitle() {
+  let bookElements = bookList.querySelectorAll('.bookelement');
+  console.log(bookElements);
+  const sortedBooks = Array.from(bookElements)
+  .sort((a, b) => a.querySelector('.title').textContent.localeCompare(b.querySelector('.title').textContent));
+  sortedBooks.forEach(book => bookList.appendChild(book));
+}
+
+function sortByAuthor() {
+  let bookElements = bookList.querySelectorAll('.bookelement');
+  const sortedBooks = Array.from(bookElements)
+  .sort((a, b) => a.querySelector('.author').textContent.localeCompare(b.querySelector('.author').textContent));
+  sortedBooks.forEach(book => bookList.appendChild(book));
+}
+
+function sortByDate() {
+  let bookElements = bookList.querySelectorAll('.bookelement');
+  const sortedBooks = Array.from(bookElements)
+  .sort((a, b) => new Date(a.querySelector('.publishdate').textContent) - new Date(b.querySelector('.publishdate').textContent));
+  sortedBooks.forEach(book => bookList.appendChild(book));
+}
+
+function sortBySubject() {
+  let bookElements = bookList.querySelectorAll('.bookelement');
+  const sortedBooks = Array.from(bookElements)
+    .sort((a, b) => a.querySelector('.subject').textContent.localeCompare(b.querySelector('.subject').textContent));
+  // console.log(sortedBooks);
+  sortedBooks.forEach(book => bookList.appendChild(book));
+}
+
+let dropbtn  = document.querySelector('.sortbox .dropbtn');
+document.querySelector('.sortbox .dropdown-content').addEventListener('click', (event) => {
+  if (event.target.matches('a')) {
+    const sortBy = event.target.textContent.toLowerCase();
+    console.log(sortBy);
+    if (sortBy === 'title') {
+      dropbtn.innerHTML = 'Title';
+      sortByTitle();
+    } else if (sortBy === 'author') {
+      dropbtn.innerHTML = 'Author';
+      sortByAuthor();
+    } else if (sortBy === 'date') {
+      dropbtn.innerHTML = 'Date';
+      sortByDate();
+    } else if (sortBy === 'subject') {
+      dropbtn.innerHTML = 'Subject';
+      sortBySubject();
+    }
+    else {
+      dropbtn.innerHTML = 'Sort';
+      fetchBooks();
+    }
+  }
+});
+
+
+
+//filter search results 
+
+const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
+let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
+// Add event listeners to dropdown links
+dropdownLinks.forEach(link => {
+  link.addEventListener('click', (event) => {
+    // Prevent default link behavior
+    event.preventDefault();
+
+    // Get the filter criteria from the clicked link
+    const sortBy = event.target.dataset.sortby;
+
+    // Iterate through all book elements and filter them based on criteria
+    const bookElements = document.querySelectorAll('.bookelement');
+    bookElements.forEach(bookElement => {
+      const title = bookElement.querySelector('.title').textContent.toLowerCase();
+      const author = bookElement.querySelector('.author').textContent.toLowerCase();
+      const publishDate = bookElement.querySelector('.publishdate').textContent.toLowerCase();
+      const subject = bookElement.querySelector('.subject').textContent.toLowerCase();
+      const desc = bookElement.querySelector('.desc').textContent.toLowerCase();
+      let searchText = document.getElementById(('myInput')).value;
+      console.log(sortBy);
+      switch (sortBy) {
+        case 'title':
+          filterdropbtn.innerHTML = 'Title';
+          bookElement.style.display = title.includes(searchText) ? 'block' : 'none';
+          break;
+          
+        case 'author':
+          filterdropbtn.innerHTML = 'Author';
+          bookElement.style.display = author.includes(searchText) ? 'block' : 'none';
+          break;
+        case 'date':
+          filterdropbtn.innerHTML = 'Date';
+          bookElement.style.display = publishDate.includes(searchText) ? 'block' : 'none';
+          break;
+        case 'subject':
+          filterdropbtn.innerHTML = 'Subject';
+          bookElement.style.display = subject.includes(searchText) ? 'block' : 'none';
+          break;
+        case 'description':
+          filterdropbtn.innerHTML = 'Description';
+          bookElement.style.display = desc.includes(searchText) ? 'block' : 'none';
+          break;
+        case 'all':
+          filterdropbtn.innerHTML = 'All';
+          // console.log(bookElement);
+          const allFields = title + author + publishDate + subject + desc;
+          bookElement.style.display = allFields.includes(searchText) ? 'block' : 'none';
+          break;
+        default:
+          filterdropbtn.innerHTML = 'All';
+          bookElement.style.display = 'block';
+      }
+    });
+  });
+});
+
+
+
+// window.addEventListener('scroll', () => {
+//   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+//     currentPage += 10;
+//     fetchBooks({ page: currentPage });
+//   }
+// });
