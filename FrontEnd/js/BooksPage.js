@@ -1,6 +1,6 @@
 const bookList = document.getElementById('book-list');
-let getBooksurl = "http://localhost:3000/api/v1/books";
-let postBooksUrl = "http://localhost:3000/api/v1/books";
+let getBooksurl = "https://librarymanagementnode.onrender.com/api/v1/books";
+let postBooksUrl = "https://librarymanagementnode.onrender.com/api/v1/books";
 let currentPage = 1;
 
 const sendHttpRequest = async (method, url, data) => {
