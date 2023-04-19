@@ -99,10 +99,26 @@ $(document).ready(function(){
     $("#book-list .bookelement").filter(function() {
       let newLen=0;
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            // Get the number of visible book elements
+      const visibleCount = $("#book-list .bookelement:visible").length;
+
+      // Update the "Showing results" message
+      const showRes = $(".showres");
+      showRes.text(`Showing ${visibleCount} results from `);
 
     });
   });
+
+
 });
+
+function updateRes(){
+  const visibleCount = Array.from(document.querySelectorAll("#book-list .bookelement"))
+  .filter(element => element.style.display !== "none").length;
+
+  const showRes = document.querySelector(".showres");
+  showRes.textContent = `Showing ${visibleCount} results from `;
+}
 
 //sorting
 function sortByTitle() {
@@ -137,6 +153,7 @@ function sortBySubject() {
 
 let dropbtn  = document.querySelector('.sortbox .dropbtn');
 document.querySelector('.sortbox .dropdown-content').addEventListener('click', (event) => {
+  
   if (event.target.matches('a')) {
     const sortBy = event.target.textContent.toLowerCase();
     console.log(sortBy);
@@ -158,6 +175,7 @@ document.querySelector('.sortbox .dropdown-content').addEventListener('click', (
       fetchBooks();
     }
   }
+  updateRes();
 });
 
 
@@ -214,12 +232,21 @@ dropdownLinks.forEach(link => {
           bookElement.style.display = allFields.includes(searchText) ? 'block' : 'none';
           break;
         default:
+          updateRes();
           filterdropbtn.innerHTML = 'All';
           bookElement.style.display = 'block';
+        
       }
+      updateRes();
     });
   });
 });
+
+setTimeout(()=>{
+  const currlen = document.querySelectorAll('.bookelement').length;
+const showres = document.querySelector('.showres');
+showres.innerHTML = `Showing results ${currlen} from `;
+},1000);
 
 
 

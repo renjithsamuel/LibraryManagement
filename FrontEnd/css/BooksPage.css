@@ -55,7 +55,12 @@ width: 3vw;
 height: 60%;
 border-radius: var(--border-radius);
 }
-
+.navicon img{
+  border-radius: 50%;
+}
+.navicon img:hover{
+  box-shadow: 2px 2px 2px 2px #0a0a0a;
+}
 .topelements{
 background-color: white;
 display: flex;
@@ -87,6 +92,11 @@ font-size: x-large;
 height: 15vh;
 width: 45vw;
 border-radius: var(--border-radius);
+transition: 1s all ease-in-out;
+}
+
+.sloganleft:hover{
+  font-size: 25px;
 }
 
   .showreswrapper{
@@ -102,9 +112,6 @@ border-radius: var(--border-radius);
     border-radius: var(--border-radius);
   }
   
-  .showres{
-
-  }
 
 .filterforsearch{
 background-color: transparent;
@@ -131,6 +138,7 @@ border-radius: var(--border-radius);
 }
 
 .sortbox{
+  padding: 2px;
 background-color: #f8f9fa;
 height: 6vh;
 width: 10vw;
@@ -138,16 +146,16 @@ border-radius: var(--border-radius);
 }
 
 .searchbox{
-  
-background-color: #f8f9fa;
+  margin-top: 0.8vh;
+background-color: transparent;
 margin-left: 1vw;
-height: 6vh;
+height: 4vh;
 width: 19vw;
 border-radius: var(--border-radius);
 
 display: flex;
 padding: 5px;
-padding-left: 10px;
+padding-left: 12px;
 /* padding-top: 1vh;
 padding-left: 2vh;
 padding-bottom:0.6vh ; */
@@ -156,19 +164,24 @@ justify-content: start;
 }
 
 .searchbox input{
+  text-align:  center;
+  border : 2px purple solid;
   padding: 10px;
   border-radius: var(--border-radius);
-  height: 6vh;
-  width: 19vw;
+  height: 3vh;
+  width: 15vw;
   height: 100%;
-  border: none;
-  background-color: transparent;
+  background-color: var(--neutral-color);
+  transition: all 0.3s ease;
+}
+.searchbox input:hover{
+  box-shadow: 1px 2px 3px 1px #646464;
 }
 
 .searchbox input:focus{
-  /* all: unset; */
-  border: none;
   outline: none;
+  box-shadow: 1px 2px 3px 1px #646464;
+
 }
 
 .bookswrapper{
@@ -193,12 +206,13 @@ border : 2px purple solid;
 height: 40vh;
 width: 20vw;
 border-radius: var(--border-radius);
-transition: all 0.4s ease;
+transition: all 0.4s ease-in-out;
 
 }
 
 .bookelement:hover{
   box-shadow: 2px 2px 2px 2px rgb(79, 2, 174);
+  /* box-shadow: 1px 2px 1px 1px #646464; */
   transform: scale(1.03);
 }
 
@@ -405,13 +419,15 @@ height: auto;
   color: white;
 }
 
-
+.dropbtn:hover{
+  box-shadow: 1px 2px 1px 1px #646464;
+}
 
 
 /* DROPDOWN 2 */
 .sortbox .dropbtn {
   background-color: var(--accent-color);
-  color: black;
+  color: rgb(221, 221, 221);
   justify-content: center;
   align-items: center;
   height: 6vh;
@@ -421,7 +437,6 @@ height: auto;
   border-radius: var(--border-radius);
   transition: all 0.3s ease;
 }
-
 
 .sortbox .dropdown {
   display: flex;
