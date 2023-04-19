@@ -1,6 +1,7 @@
 const bookList = document.getElementById('book-list');
-let getBooksurl = "https://librarymanagementnode.onrender.com/api/v1/books";
-let postBooksUrl = "https://librarymanagementnode.onrender.com/api/v1/books";
+let page = 1;
+let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=11`;
+let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 
 const sendHttpRequest = async (method, url, data) => {
     let returndata;
@@ -34,12 +35,29 @@ async function fetchBooks() {
     }
   }
 
-
+  async function fetchBooksPage(url) {
+    // Add query handling and pagination logic
+    try {
+      await sendHttpRequest('GET',url).then((responseData)=>{
+        // console.log(responseData.data);
+        displayBooksBypage(responseData.data);
+      })
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
 fetchBooks();
+
 function displayBooks(books) {
   console.log(books);
   bookList.innerHTML = ''; // clear the book list before displaying new books
+  books.forEach((book) => {
+    createCard(book);
+  });
+}
+function displayBooksBypage(books) {
+  console.log(books); // clear the book list before displaying new books
   books.forEach((book) => {
     createCard(book);
   });
@@ -248,10 +266,17 @@ showres.innerHTML = `Showing results ${currlen} from `;
 },5000);
 
 
-
-// window.addEventListener('scroll', () => {
-//   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-//     currentPage += 10;
-//     fetchBooks({ page: currentPage });
+// $(window).scroll(function() {
+//   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+//       alert("bottom!");
 //   }
 // });
+
+
+window.addEventListener('scroll', (event) => {
+  if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
+    setTimeout(()=>{},2000);
+    page += 1;
+    fetchBooksPage(getBooksurl);
+  }
+});

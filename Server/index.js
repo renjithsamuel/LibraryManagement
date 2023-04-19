@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 // const booksRouter = require('./routes/books');
-const {getBooks , postBooks , postManyBooks} = require('./controller/Bookscontroller');
+const {getBooks , postBooks , postManyBooks,getBooksPage} = require('./controller/Bookscontroller');
 //, getBooksById, postBooks, deleteBooksById, deleteBooksByBody,updateBooksById
 const helmet = require('helmet');
 
@@ -29,6 +29,7 @@ app.use(express.json());
 // app.use('/books', booksRouter);
 
 app.get('/api/v1/books',getBooks);
+app.get('/api/v1/booksPage',getBooksPage);
 // app.get('/api/v1/books/:id',getBooksById);
 app.post('/api/v1/books',postBooks);
 app.post('/api/v1/manyBooks',postManyBooks);
