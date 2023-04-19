@@ -1,7 +1,6 @@
 const bookList = document.getElementById('book-list');
 let getBooksurl = "https://librarymanagementnode.onrender.com/api/v1/books";
 let postBooksUrl = "https://librarymanagementnode.onrender.com/api/v1/books";
-let currentPage = 1;
 
 const sendHttpRequest = async (method, url, data) => {
     let returndata;
@@ -246,7 +245,7 @@ setTimeout(()=>{
   const currlen = document.querySelectorAll('.bookelement').length;
 const showres = document.querySelector('.showres');
 showres.innerHTML = `Showing results ${currlen} from `;
-},1000);
+},5000);
 
 
 
