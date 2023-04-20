@@ -62,7 +62,7 @@ function displayBooksBypage(books) {
 }
 
 
-function createCard(book){
+async function createCard(book){
   var date = new Date(book.publishedDate); 
 
   let newdate = '';
@@ -75,11 +75,14 @@ function createCard(book){
           year: 'numeric',});
       newdate = day+" "+month+" "+year;
   }
+  let bookImageObj = await sendHttpRequest('GET' , `https://www.googleapis.com/books/v1/volumes?q=${book.title}`);
+  console.log(bookImageObj.items[0].volumeInfo.imageLinks.thumbnail);
+  let imageLink = bookImageObj.items[0].volumeInfo.imageLinks.thumbnail;
   const bookElement = document.createElement('div');
   bookElement.innerHTML = `  <div class="bookelement">
   <div class="booktop">
       <div class="bookimage">
-          <img src="./assets/book.svg" height="100vh" width="100vw">
+          <img src=${imageLink} height="80%"  width="80%"  style="border-radius: 10px;">
       </div>
       <div class="smallinfo">
           <div class="title">
