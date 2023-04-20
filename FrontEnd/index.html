@@ -18,61 +18,66 @@
   <header>
     <nav>
         <div class="navleft">
-            Library
+            Libraryhive
         </div>
         <div class="navright">
+          <div class="username">Renjith Samuel</div>
             <div class="navicon">
               <img src="./assets/user-circle.svg" alt="user" height="50vh" width="50vh">
             </div>
+            
         </div>
     </nav>
 </header>
 <!-- top elements for controls -->
 <div class="topelements">
-    <div class="sloganplusres">
 
-        <div class="sloganleft">
-            “A world without books is like a world without sunshine”
-        </div>
-        <div class="showreswrapper">
-          <div class="showres">
-            Showing results 0 from
-          </div>
-          <div class="filterforsearch">
-            <div class="dropdown">
-              <button class="dropbtn">All</button>
-              <div class="dropdown-content">
-                <a href="#" data-sortby="all">All</a>
-                <a href="#" data-sortby="title">Title</a>
-                <a href="#" data-sortby="author">Author</a>
-                <a href="#" data-sortby="date">Date</a>
-                <a href="#" data-sortby="subject">Subject</a>
-                <a href="#" data-sortby="description">Description</a>
-              </div>
-            </div>
-        </div>
+  <div class="filterleft">
+    
+    <div class="searchbox">
+      <input placeholder="Search" id="myInput">
+      <i class="fa-solid fa-magnifying-glass"></i>
     </div>
+
+    <div class="sortbox">
+      <div class="dropdown">
+        <button class="dropbtn">Sort</button>
+        <div class="dropdown-content">
+          <a href="#" data-sortby="all">Reset</a>
+          <a href="#" data-sortby="title">Title</a>
+          <a href="#" data-sortby="author">Author</a>
+          <a href="#" data-sortby="date">Date</a>
+          <a href="#" data-sortby="subject">Subject</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+    <div class="sloganright">
+        “A world without books is like a world without sunshine”
     </div>
     
-    <div class="filterright">
-              <div class="sortbox">
-                <div class="dropdown">
-                  <button class="dropbtn">Sort</button>
-                  <div class="dropdown-content">
-                    <a href="#" data-sortby="all">Reset</a>
-                    <a href="#" data-sortby="title">Title</a>
-                    <a href="#" data-sortby="author">Author</a>
-                    <a href="#" data-sortby="date">Date</a>
-                    <a href="#" data-sortby="subject">Subject</a>
-                  </div>
-                </div>
-              </div>
-        <div class="searchbox">
-          <input placeholder="Search" id="myInput">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-    </div>
 
+</div>
+<!-- shoresults -->
+<div class="showreswrapper">
+  <div class="showres">
+    Showing results 0 from
+  </div>
+  <div class="filterforsearch">
+    <div class="dropdown">
+      <button class="dropbtn">All</button>
+      <div class="dropdown-content">
+        <a href="#" data-sortby="all">All</a>
+        <a href="#" data-sortby="title">Title</a>
+        <a href="#" data-sortby="author">Author</a>
+        <a href="#" data-sortby="date">Date</a>
+        <a href="#" data-sortby="subject">Subject</a>
+        <a href="#" data-sortby="description">Description</a>
+      </div>
+    </div>
+</div>
 </div>
 <!-- books display part -->
 <div class="bookswrapper" id="book-list">

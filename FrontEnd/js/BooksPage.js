@@ -254,11 +254,11 @@ dropdownLinks.forEach(link => {
   });
 });
 
-setTimeout(()=>{
-  const currlen = document.querySelectorAll('.bookelement').length;
-const showres = document.querySelector('.showres');
-showres.innerHTML = `Showing results ${currlen} from `;
-},5000);
+// setTimeout(()=>{
+//   const currlen = document.querySelectorAll('.bookelement').length;
+// const showres = document.querySelector('.showres');
+// showres.innerHTML = `Showing results ${currlen} from `;
+// },5000);
 
 
 
@@ -285,3 +285,21 @@ window.addEventListener('scroll', async (event) => {
     });
   }
 });
+
+// getSlogan();  
+// //slogan generator
+// async function getSlogan(){  
+//   await await fetch("https://andruxnet-random-famous-quotes.p.rapidapi.com/", {    
+//     method: 'GET',
+//     params: {cat: 'famous', count: '10'},
+//     headers: {
+//       'X-RapidAPI-Key': '274c49fc77mshdc27b81036cbb24p14897ajsn4896a',
+//       'X-RapidAPI-Host': 'andruxnet-random-famous-quotes.p.rapidapi.com'
+//     },
+//     }).then(function (response) {
+//     console.log(response.data);
+//   }).catch(function (error) {
+//     console.error(error);
+//   });
+
+// }
