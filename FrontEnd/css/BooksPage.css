@@ -1,5 +1,6 @@
   :root {
-    --primary-color: rgba(166, 233, 255, 0.642);
+    /* rgba(166, 233, 255, 0.642) */
+    --primary-color: rgba(176, 235, 255, 0.641);
     --secondary-color: #6c757d;
     --accent-color: #b8b8ba ;
     --error-color: #dc3545;
@@ -106,7 +107,7 @@
 
 
   .topelements{
-    background-color: white;
+    background-color: transparent;
     display: flex;
     align-self: center;
     width: 87%;
@@ -129,7 +130,6 @@
 
   .searchbox{
     background-color: transparent;
-    margin-left: 1vw;
     height: 7vh;
     width: 15vw;
     border-radius: var(--border-radius);
@@ -288,12 +288,12 @@
   /* DROPDOWN filter for search */
 .filterforsearch .dropbtn {
   background-color: #e4e4e4;;
-  color: black;
+  color: rgb(84, 84, 84);
   justify-content: center;
   align-items: center;
   height: 5vh;
   width: 7vw;
-  font-size: 15px;
+  font-size: 17px;
   border: none;
   border-radius: var(--border-radius);
   transition: all 0.3s ease;
@@ -557,10 +557,10 @@ height: auto;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: #9c27b0;
+  background-color: rgba(28, 171, 219, 0.642);
 }
 
 .loading-circle::after {
@@ -574,7 +574,7 @@ height: auto;
   height: 24px;
   border-radius: 50%;
   border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: #9c27b0;
+  border-top-color: rgba(28, 171, 219, 0.642);
   animation: spin 1s ease-in-out infinite;
 }
 
