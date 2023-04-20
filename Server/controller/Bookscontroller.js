@@ -1,6 +1,6 @@
 const Books = require('../models/book');
 
-
+// getting all books 
 exports.getBooks = async (req,res,next) => {
 
     try{
@@ -18,7 +18,7 @@ exports.getBooks = async (req,res,next) => {
             })
         }
     }
-
+// posting single book
     exports.postBooks = async (req,res,next) =>{
         console.log(req.body);
         if(req.body.title == null || req.body.author == null || req.body.subject == null || req.body.publishedDate == null || req.body.desc == null){
@@ -41,7 +41,7 @@ exports.getBooks = async (req,res,next) => {
         }
     }
 
-
+// posting many books
     exports.postManyBooks = async (req, res, next) => {
         console.log(req.body);
         
@@ -73,7 +73,7 @@ exports.getBooks = async (req,res,next) => {
           });
         }
       };
-
+// getting books by page count
     exports.getBooksPage = async (req, res, next) => {
       const page = parseInt(req.query.page);
       const limit = parseInt(req.query.limit);
