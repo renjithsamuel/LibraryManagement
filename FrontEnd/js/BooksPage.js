@@ -116,20 +116,28 @@ $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#book-list .bookelement").filter(function() {
-      let newLen=0;
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            // Get the number of visible book elements
-      const visibleCount = $("#book-list .bookelement:visible").length;
-
       // Update the "Showing results" message
-      const showRes = $(".showres");
-      showRes.text(`Showing ${visibleCount} results from `);
-
+      updateRes();
+      
     });
   });
 
 
 });
+
+
+let showres = document.getElementById('showreswrapper');
+let searchfocus = document.getElementById('myInput');
+searchfocus.addEventListener("focus", function() {
+  showres.style.display = 'flex';
+});
+
+searchfocus.addEventListener("blur", function() {
+  showres.style.display = 'none';
+});
+
+
 
 function updateRes(){
   const visibleCount = Array.from(document.querySelectorAll("#book-list .bookelement"))
