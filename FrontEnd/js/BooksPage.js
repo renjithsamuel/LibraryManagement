@@ -1,6 +1,6 @@
 const bookList = document.getElementById('book-list');
 let page = 1;
-let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=11`;
+let getBooksurl = `http://localhost:3000/api/v1/booksPage?page=${page}&limit=10`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 
 const sendHttpRequest = async (method, url, data) => {
@@ -20,7 +20,6 @@ const sendHttpRequest = async (method, url, data) => {
 }
 
 async function fetchBooks() {
-    // Add query handling and pagination logic
     try {
       await sendHttpRequest('GET',getBooksurl).then((responseData)=>{
         console.log(responseData);
@@ -36,7 +35,6 @@ async function fetchBooks() {
   }
 
   async function fetchBooksPage(url) {
-    // Add query handling and pagination logic
     try {
       await sendHttpRequest('GET',url).then((responseData)=>{
         // console.log(responseData.data);
@@ -51,13 +49,13 @@ fetchBooks();
 
 function displayBooks(books) {
   console.log(books);
-  bookList.innerHTML = ''; // clear the book list before displaying new books
+  bookList.innerHTML = '';
   books.forEach((book) => {
     createCard(book);
   });
 }
 function displayBooksBypage(books) {
-  console.log(books); // clear the book list before displaying new books
+  console.log(books); 
   books.forEach((book) => {
     createCard(book);
   });
@@ -65,7 +63,7 @@ function displayBooksBypage(books) {
 
 
 function createCard(book){
-  var date = new Date(book.publishDate); // Parse the string date into a date object
+  var date = new Date(book.publishedDate); 
 
   let newdate = '';
   if (date) {
@@ -105,6 +103,7 @@ function createCard(book){
   </div>
   </div>`
   bookList.appendChild(bookElement);
+  updateRes();
 }
 
 
@@ -192,7 +191,6 @@ document.querySelector('.sortbox .dropdown-content').addEventListener('click', (
       fetchBooks();
     }
   }
-  updateRes();
 });
 
 
@@ -201,16 +199,12 @@ document.querySelector('.sortbox .dropdown-content').addEventListener('click', (
 
 const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
 let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
-// Add event listeners to dropdown links
 dropdownLinks.forEach(link => {
   link.addEventListener('click', (event) => {
-    // Prevent default link behavior
     event.preventDefault();
 
-    // Get the filter criteria from the clicked link
     const sortBy = event.target.dataset.sortby;
 
-    // Iterate through all book elements and filter them based on criteria
     const bookElements = document.querySelectorAll('.bookelement');
     bookElements.forEach(bookElement => {
       const title = bookElement.querySelector('.title').textContent.toLowerCase();
@@ -249,12 +243,10 @@ dropdownLinks.forEach(link => {
           bookElement.style.display = allFields.includes(searchText) ? 'block' : 'none';
           break;
         default:
-          updateRes();
           filterdropbtn.innerHTML = 'All';
           bookElement.style.display = 'block';
         
       }
-      updateRes();
     });
   });
 });
@@ -266,17 +258,27 @@ showres.innerHTML = `Showing results ${currlen} from `;
 },5000);
 
 
-// $(window).scroll(function() {
-//   if($(window).scrollTop() + $(window).height() == $(document).height()) {
-//       alert("bottom!");
-//   }
-// });
 
 
-window.addEventListener('scroll', (event) => {
-  if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
-    setTimeout(()=>{},2000);
+const loadingElem = document.getElementById('loading');
+let loading = false;
+
+window.addEventListener('scroll', async (event) => {
+ 
+  if (window.innerHeight + window.scrollY  >= document.body.offsetHeight && !loading) {
+    console.log("Reached end!");
+    
+    loading = true; 
+    console.log(loading?"loading":"");
+    loadingElem.classList.add('loading');
+
+   
     page += 1;
-    fetchBooksPage(getBooksurl);
+    console.log(page);
+    fetchBooksPage(`http://localhost:3000/api/v1/booksPage?page=${page}&limit=10`).then(()=>{
+    
+        loadingElem.classList.remove('loading');
+        loading = false;
+    });
   }
 });
