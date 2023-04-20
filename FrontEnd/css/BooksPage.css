@@ -421,7 +421,7 @@
 
 
 .bookswrapper{
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color); */
   margin-top: 4vh;
   width: 89%;
   height: auto;

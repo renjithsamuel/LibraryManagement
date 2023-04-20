@@ -1,6 +1,7 @@
 const bookList = document.getElementById('book-list');
 let page = 1;
 let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`;
+let getAllBooksurl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 
 //fetch request function 
@@ -23,7 +24,7 @@ const sendHttpRequest = async (method, url, data) => {
 //fetch books function that is not used currently
 async function fetchBooks() {
     try {
-      await sendHttpRequest('GET',getBooksurl).then((responseData)=>{
+      await sendHttpRequest('GET',getAllBooksurl).then((responseData)=>{
         console.log(responseData);
         const arr = responseData.data;
         const res =  arr.filter(book => book["author"].includes("Dan"));
@@ -275,6 +276,7 @@ dropdownLinks.forEach(link => {
           break;
         default:
           filterdropbtn.innerHTML = 'All';
+          fetchBooks();
           bookElement.style.display = 'block';
         
       }
@@ -356,7 +358,7 @@ postbox.addEventListener('click', () => {
   document.body.appendChild(dialogBox);
 
   let addBookBtn = document.getElementById('add-book');
-  addBookBtn.addEventListener('click', () => {
+  addBookBtn.addEventListener('click',async () => {
     let title = document.getElementById('title').value;
     let author = document.getElementById('author').value;
     let date = document.getElementById('date').value;
@@ -370,7 +372,9 @@ postbox.addEventListener('click', () => {
       subject : subject,
       desc : description 
     }
-    postOneBook(obj);
+    await postOneBook(obj).then(()=>{
+      alert('Posted successully!');
+    }).catch((err)=>alert('Something went wrong!' + err.message));
     dialogBox.remove();
   });
 
