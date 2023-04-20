@@ -79,7 +79,7 @@ async function createCard(book){
   console.log(bookImageObj.items[0].volumeInfo.imageLinks.thumbnail);
   let imageLink = (bookImageObj.items[0].volumeInfo.imageLinks.thumbnail)?bookImageObj.items[0].volumeInfo.imageLinks.thumbnail:`./assets/book.svg`;
   const bookElement = document.createElement('div');
-  bookElement.innerHTML = `  <div class="bookelement">
+  bookElement.innerHTML = `<div class="bookelement">
   <div class="booktop">
       <div class="bookimage">
           <img src=${imageLink} height="80%"  width="80%"  style="border-radius: 10px;">
@@ -99,8 +99,11 @@ async function createCard(book){
           </div>
       </div>
   </div>
+  
   <div class="bookdown">
+    
       <div class="desc">
+      <strong>Description:</strong> <br>
       ${book.desc}
       </div>
   </div>
@@ -133,17 +136,15 @@ let bookswrapper = document.getElementById('book-list');
 
 searchfocus.addEventListener("focus", function() {
   showres.style.display = 'flex';
-  setTimeout(() => {showres.classList.add('visible');
-    bookswrapper.classList.add('shift-down');}
-  , 10);
+  setTimeout(() => {showres.classList.add('visible');}
+  , 0);
 
 });
 
 searchfocus.addEventListener("blur", function() {
   
   if(!searchfocus.value) {showres.classList.remove('visible');
-  showres.style.display = 'none';
-  bookswrapper.classList.remove('shift-down');}
+  showres.style.display = 'none';}
 });
 
 
@@ -207,7 +208,7 @@ document.querySelector('.sortbox .dropdown-content').addEventListener('click', (
       sortBySubject();
     }
     else {
-      dropbtn.innerHTML = 'Sort';
+      dropbtn.innerHTML = 'Sort by';
       fetchBooks();
     }
   }
