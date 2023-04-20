@@ -3,6 +3,7 @@ let page = 1;
 let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 
+//fetch request function 
 const sendHttpRequest = async (method, url, data) => {
     let returndata;
     await fetch(url, {    
@@ -19,6 +20,7 @@ const sendHttpRequest = async (method, url, data) => {
     return returndata;
 }
 
+//fetch books function that is not used currently
 async function fetchBooks() {
     try {
       await sendHttpRequest('GET',getBooksurl).then((responseData)=>{
@@ -34,6 +36,7 @@ async function fetchBooks() {
     }
   }
 
+  //fetches books page by page 
   async function fetchBooksPage(url) {
     try {
       await sendHttpRequest('GET',url).then((responseData)=>{
@@ -45,8 +48,7 @@ async function fetchBooks() {
     }
   }
 
-fetchBooks();
-
+//displaybook function gets books data fetched from db and creates card , instead of adding it to an array
 function displayBooks(books) {
   console.log(books);
   bookList.innerHTML = '';
@@ -61,7 +63,19 @@ function displayBooksBypage(books) {
   });
 }
 
+//post book function  
+async function postOneBook(body){
+  try{
+    await sendHttpRequest('POST',postBooksUrl,body).then((response)=>{
+      console.log(response);
+      console.log('posted!');
+    });
+  }catch(err){
+    console.error(err.message);
+  }
+} 
 
+//funciton that creates card and updates number of cards
 async function createCard(book){
   var date = new Date(book.publishedDate); 
 
@@ -114,7 +128,7 @@ async function createCard(book){
 
 
 
-// search
+// search using jquery credits - w3schools
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
@@ -125,11 +139,9 @@ $(document).ready(function(){
       
     });
   });
-
-
 });
 
-
+//to show and hide results count from search
 let showres = document.getElementById('showreswrapper');
 let searchfocus = document.getElementById('myInput');
 let bookswrapper = document.getElementById('book-list');
@@ -148,7 +160,7 @@ searchfocus.addEventListener("blur", function() {
 });
 
 
-
+//to update count results of search
 function updateRes(){
   const visibleCount = Array.from(document.querySelectorAll("#book-list .bookelement"))
   .filter(element => element.style.display !== "none").length;
@@ -216,8 +228,7 @@ document.querySelector('.sortbox .dropdown-content').addEventListener('click', (
 
 
 
-//filter search results 
-
+//filter search results function - inefficient must switch to better way
 const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
 let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
 dropdownLinks.forEach(link => {
@@ -280,7 +291,7 @@ dropdownLinks.forEach(link => {
 
 
 
-
+//loading animation and generate new data by using fetch 
 const loadingElem = document.getElementById('loading');
 let loading = false;
 
@@ -300,6 +311,8 @@ window.addEventListener('scroll', async (event) => {
   }
 });
 
+
+//slogan genarator from RapidAPI test failed
 // getSlogan();  
 // //slogan generator
 // async function getSlogan(){  
@@ -317,3 +330,53 @@ window.addEventListener('scroll', async (event) => {
 //   });
 
 // }
+//to post new book data
+let postbox = document.getElementById('postbox');
+postbox.addEventListener('click', () => {
+  let dialogBox = document.createElement('div');
+  dialogBox.setAttribute('id', 'dialog-box');
+  dialogBox.innerHTML = `
+    <div id="dialog-content">
+      <h2>Add Book</h2>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title">
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author">
+      <label for="date">Date: (yyyy-mm-dd) </label>
+      <input type="text" id="date" name="date">
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" name="subject">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description"></textarea>
+      <button id="add-book">Add Book</button>
+      <button id="cancel">Cancel</button>
+    </div>
+  `;
+  document.body.appendChild(dialogBox);
+
+  let addBookBtn = document.getElementById('add-book');
+  addBookBtn.addEventListener('click', () => {
+    let title = document.getElementById('title').value;
+    let author = document.getElementById('author').value;
+    let date = document.getElementById('date').value;
+    let subject = document.getElementById('subject').value;
+    let description = document.getElementById('description').value;
+    if(title==null || author==null || date == null || subject == null || description == null)alert('Enter valid book details!');
+    let obj = {
+      title : title,
+      author : author, 
+      publishedDate : date,
+      subject : subject,
+      desc : description 
+    }
+    postOneBook(obj);
+    dialogBox.remove();
+  });
+
+  let cancelBtn = document.getElementById('cancel');
+  cancelBtn.addEventListener('click', () => {
+    dialogBox.remove();
+  });
+});
+
+//end of javascript

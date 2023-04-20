@@ -34,9 +34,7 @@
                           0 2px 2px rgba(0, 0, 0, 0.12);
   }
 
-  /* body {
-  background-color: var(--neutral-color);
-  } */
+  /* everything in HTML is in top to down and left to right order , and mostly self explanatory */
   *{
     scroll-behavior: smooth;
     font-family: 'Poppins';
@@ -155,7 +153,7 @@
     align-self: center;
     height: 7vh;
     width: 35vw;
-    margin-left: 30vw;
+    margin-left: 25vw;
     border-radius: var(--border-radius);
     align-items: center;
     justify-content: start;
@@ -171,9 +169,10 @@
   }
 
   .searchbox input{
+    font-size: 15px;
     border: none;
     text-align:  justify;
-    text-indent: 8px;
+    text-indent: 10px;
     border-radius: var(--border-radius);
     height: 6vh;
     width: 15vw;
@@ -273,7 +272,22 @@
 
 
 
+  .postbox{
+    margin-left: 0.9vw;
+    background-color:  #e4e4e4;;
+    width: 4vw;
+    height: 6vh;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
+  .postbox:hover{
+    background-color: #d4d4d4;
+    cursor: pointer;
+    box-shadow: var(--box-shadow-button);
+  }
 
 
   #showreswrapper{
@@ -676,4 +690,72 @@ height: auto;
 @keyframes spin {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+
+#dialog-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+}
+
+#dialog-content {
+  position: absolute;
+  top: 20vh;
+  left: 60vh;
+  transform: translate(-50%, -50%);
+  background-color: var(--neutral-color);
+  padding: 20px;
+  width: 30vw;
+  height: 66vh;
+  border-radius: var(--border-radius);
+  
+}
+
+#dialog-content h2 {
+  margin-top: 0;
+}
+
+#dialog-content label {
+  display: block;
+  margin-bottom: 5px;
+  margin-left: 0.5vw;
+}
+
+#dialog-content input,
+#dialog-content textarea {
+  border: none;
+  box-shadow: var(--box-shadow-button);
+  margin-left: 2vw;
+  width: 80%;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: var(--border-radius);
+  text-indent: 10px;
+}
+
+#dialog-content input:focus,
+#dialog-content textarea:focus {
+  outline: none;
+  box-shadow: var(--box-shadow-book);
+}
+
+#dialog-content button {
+  background-color: #d4d4d4;
+  margin-left: 6vw;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  border: none;
+}
+
+#dialog-content button:hover {
+  cursor: pointer;
+  background-color: #888;
 }

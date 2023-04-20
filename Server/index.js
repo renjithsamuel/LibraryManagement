@@ -1,14 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-// const booksRouter = require('./routes/books');
 const {getBooks , postBooks , postManyBooks,getBooksPage} = require('./controller/Bookscontroller');
-//, getBooksById, postBooks, deleteBooksById, deleteBooksByBody,updateBooksById
 const helmet = require('helmet');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
+//mongo db connection 
 mongoose.connect('mongodb+srv://ranjithsamuelking:Samking123@cluster0.gp8dend.mongodb.net/Library?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -21,16 +21,16 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
+
 app.use(helmet());
 app.use(cors({
   origin: '*'
 }));
 app.use(express.json());
-// app.use('/books', booksRouter);
 
+//routing to api handlers
 app.get('/api/v1/books',getBooks);
 app.get('/api/v1/booksPage',getBooksPage);
-// app.get('/api/v1/books/:id',getBooksById);
 app.post('/api/v1/books',postBooks);
 app.post('/api/v1/manyBooks',postManyBooks);
 // app.delete('/api/v1/books/:id',deleteBooksById);

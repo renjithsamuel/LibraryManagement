@@ -9,6 +9,9 @@ This project is a web application for managing a library of books. It allows use
 - Sort books by title or author
 - Filter books by genre or publication year
 - Paginate books to display only a limited number at a time
+- add books to your collection
+- image generation from Google api for every book added
+- adding user system for multiple users to create their own LibraryHive
 ## Technologies used
 
 - Frontend: HTML, CSS, JavaScript

@@ -1,5 +1,5 @@
 const Books = require('../models/book');
-
+//API HANDLERS
 // getting all books 
 exports.getBooks = async (req,res,next) => {
 
@@ -18,6 +18,7 @@ exports.getBooks = async (req,res,next) => {
             })
         }
     }
+
 // posting single book
     exports.postBooks = async (req,res,next) =>{
         console.log(req.body);
