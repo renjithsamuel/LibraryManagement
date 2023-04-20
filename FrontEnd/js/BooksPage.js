@@ -77,7 +77,7 @@ async function createCard(book){
   }
   let bookImageObj = await sendHttpRequest('GET' , `https://www.googleapis.com/books/v1/volumes?q=${book.title}`);
   console.log(bookImageObj.items[0].volumeInfo.imageLinks.thumbnail);
-  let imageLink = bookImageObj.items[0].volumeInfo.imageLinks.thumbnail;
+  let imageLink = (bookImageObj.items[0].volumeInfo.imageLinks.thumbnail)?bookImageObj.items[0].volumeInfo.imageLinks.thumbnail:`./assets/book.svg`;
   const bookElement = document.createElement('div');
   bookElement.innerHTML = `  <div class="bookelement">
   <div class="booktop">
@@ -129,12 +129,21 @@ $(document).ready(function(){
 
 let showres = document.getElementById('showreswrapper');
 let searchfocus = document.getElementById('myInput');
+let bookswrapper = document.getElementById('book-list');
+
 searchfocus.addEventListener("focus", function() {
   showres.style.display = 'flex';
+  setTimeout(() => {showres.classList.add('visible');
+    bookswrapper.classList.add('shift-down');}
+  , 10);
+
 });
 
 searchfocus.addEventListener("blur", function() {
+  
+  if(!searchfocus.value) {showres.classList.remove('visible');
   showres.style.display = 'none';
+  bookswrapper.classList.remove('shift-down');}
 });
 
 
@@ -230,7 +239,6 @@ dropdownLinks.forEach(link => {
           filterdropbtn.innerHTML = 'Title';
           bookElement.style.display = title.includes(searchText) ? 'block' : 'none';
           break;
-          
         case 'author':
           filterdropbtn.innerHTML = 'Author';
           bookElement.style.display = author.includes(searchText) ? 'block' : 'none';
@@ -249,7 +257,6 @@ dropdownLinks.forEach(link => {
           break;
         case 'all':
           filterdropbtn.innerHTML = 'All';
-          // console.log(bookElement);
           const allFields = title + author + publishDate + subject + desc;
           bookElement.style.display = allFields.includes(searchText) ? 'block' : 'none';
           break;
@@ -258,6 +265,8 @@ dropdownLinks.forEach(link => {
           bookElement.style.display = 'block';
         
       }
+
+      updateRes();
     });
   });
 });
@@ -278,16 +287,12 @@ window.addEventListener('scroll', async (event) => {
  
   if (window.innerHeight + window.scrollY  >= document.body.offsetHeight && !loading) {
     console.log("Reached end!");
-    
     loading = true; 
     console.log(loading?"loading":"");
     loadingElem.classList.add('loading');
-
-   
     page += 1;
     console.log(page);
     fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then(()=>{
-    
         loadingElem.classList.remove('loading');
         loading = false;
     });

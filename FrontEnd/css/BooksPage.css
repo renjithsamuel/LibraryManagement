@@ -41,7 +41,20 @@
     scroll-behavior: smooth;
     font-family: 'Poppins';
     transition: all 0.3s ease;
+    animation: slide-up 0.5s ease-out forwards ;
   }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
 
   body{
     margin: 0px;
@@ -115,14 +128,34 @@
     border-radius: var(--border-radius);
   }
 
+    /* slogan box */
+    .sloganleft{
+      font-family: "Sofia", sans-serif;
+      background-color: #e4e4e4;
+      margin-top: 0.25vh;
+      padding-top: 10px;
+      text-align: center;
+      text-indent: 8px;
+      font-size: large;
+      height: 6vh;
+      width: 45vw;
+      border-radius: var(--border-radius);
+      transition: 1s all ease-in-out;
+    }
+  
+    .sloganleft:hover{
+      font-size: 19px;
+    }
 
-  .filterleft{
+
+  .filterright{
     background-color: transparent;
     display: flex;
     justify-self: center;
     align-self: center;
     height: 7vh;
     width: 35vw;
+    margin-left: 30vw;
     border-radius: var(--border-radius);
     align-items: center;
     justify-content: start;
@@ -169,7 +202,6 @@
 
   /* DROPDOWN 2 */
   .sortbox .dropbtn {
-
     margin-left: 0.5vw;
     text-align:  justify;
     text-indent: 8px;
@@ -195,6 +227,7 @@
     display: inline-block;
     transition: all 0.3s ease;
     border-radius: var(--border-radius);
+    transform: translateZ(0);
   }
 
   .sortbox .dropdown-content {
@@ -206,9 +239,10 @@
     margin-left: 1vh;
     width: 7vw;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    transform: translateZ(0);
     transition: all 0.3s ease;
     border-radius: var(--border-radius);
+    z-index: 3;
   }
 
   .sortbox .dropdown-content a {
@@ -224,11 +258,12 @@
     display: block;
     transition: all 0.3s ease;
     border-radius: var(--border-radius);
+    z-index: 3;
   }
 
   .sortbox .dropdown-content a:hover {
     background-color: #e4e4e4;
-    
+    z-index: 3;
   }
   .sortbox .dropdown:hover .dropdown-content {display: block;}
 
@@ -237,30 +272,14 @@
   }
 
 
-  /* slogan box */
-  .sloganright{
-    font-family: "Sofia", sans-serif;
-    background-color: #e4e4e4;
-    margin-top: 0.25vh;
-    padding-top: 10px;
-    text-align: center;
-    text-indent: 8px;
-    font-size: large;
-    height: 6vh;
-    width: 35vw;
-    margin-left: 20vw;
-    border-radius: var(--border-radius);
-    transition: 1s all ease-in-out;
-  }
 
-  .sloganright:hover{
-    font-size: 19px;
-  }
 
-  .showreswrapper{
+
+
+  #showreswrapper{
     background-color: transparent;
     font-size: large;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     margin-top: 2vh;
@@ -268,7 +287,29 @@
     width: 26vw;
     border-radius: var(--border-radius);
     margin-left: 5vw;
-    transition: all 0.3s ease-in-out;
+    /* opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out; */
+    /* animation: slide-in 0.3s ease-in-out forwards; */
+  }
+
+   .visible {
+    opacity: 1;
+    transform: translateY(0);
+    transform: translateZ(0);
+    animation: slide-up 0.3s ease-in-out forwards;
+  }
+
+  
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .showres{
@@ -298,6 +339,7 @@
   border: none;
   border-radius: var(--border-radius);
   transition: all 0.3s ease;
+  z-index: -1;
 }
 
 
@@ -310,7 +352,10 @@
   position: relative;
   display: inline-block;
   transition: all 0.3s ease;
+  transform: translateZ(0);
   border-radius: var(--border-radius);
+  z-index: -1;
+
 }
 
 .filterforsearch .dropdown-content {
@@ -321,10 +366,13 @@
   position: absolute;
   background-color: var(--accent-color);
   width: 7vw;
+  transform: translateZ(0);
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+  /* z-index: 1; */
   transition: all 0.3s ease;
   border-radius: var(--border-radius);
+  z-index: -1;
+
 }
 
 .filterforsearch .dropdown-content a {
@@ -366,14 +414,27 @@
   padding: 5vh;
   display: flex;
   flex-wrap: wrap;
-  gap:25px ;
+  /* gap:25px ; */
+
   justify-self: center;
   align-self: center;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-start;
   border-radius: var(--border-radius);
   margin-bottom: 5vh;
+  transition: transform 0.3s ease-in-out;
+  z-index: -1;
+  
+  /* grid-template-columns: auto auto auto auto; */
 }
+/* 
+.showreswrapper.visible ~ .bookswrapper {
+  transform: translateY(7vh);
+} */
+.shift-down {
+  transform: translateY(7vh);
+}
+
 
 
 .bookelement{
@@ -381,6 +442,7 @@
   /* border : 2px purple solid; */
   height: 40vh;
   width: 20vw;
+  margin:15px;
   border-radius: var(--border-radius);
   transition: all 0.4s ease-in-out;
   box-shadow:  var(--box-shadow-smooth);
@@ -542,7 +604,7 @@ height: auto;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  /* z-index: 9999; */
 }
 
 .loading-circle {
