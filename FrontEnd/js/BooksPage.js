@@ -48,6 +48,7 @@ async function fetchBooks() {
     }
   }
 
+  fetchBooksPage(getBooksurl);
 //displaybook function gets books data fetched from db and creates card , instead of adding it to an array
 function displayBooks(books) {
   console.log(books);
