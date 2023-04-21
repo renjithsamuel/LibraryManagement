@@ -911,8 +911,8 @@ height: auto;
   }
 }
 
-/* for fairly small displays 900px*/
-@media only screen and (max-width: 900px) {
+/* for fairly small displays 1200px*/
+@media only screen and (max-width: 1200px) {
   .navright{
     margin-left: 45vw;
     width: max-content;
