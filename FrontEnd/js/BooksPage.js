@@ -1,5 +1,7 @@
 const bookList = document.getElementById('book-list');
 let page = 1;
+let endOfBooks = false;
+let posting = false;
 let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`;
 let getAllBooksurl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
@@ -16,7 +18,8 @@ const sendHttpRequest = async (method, url, data) => {
     })
     .then((response) => returndata =  response.json())
     .catch((error) => {
-      console.error("Error:", error);
+      console.log("429 - Too Many Request Error - Not a Problem - Try Again Later - 👍");
+      // console.error("Error:", error);
     });
     return returndata;
 }
@@ -25,12 +28,14 @@ const sendHttpRequest = async (method, url, data) => {
 async function fetchBooks() {
     try {
       await sendHttpRequest('GET',getAllBooksurl).then((responseData)=>{
-        console.log(responseData);
+          
         const arr = responseData.data;
         const res =  arr.filter(book => book["author"].includes("Dan"));
-        console.log("Filter!!!!..............");
-        console.log(res);
+          
+          
         displayBooks(responseData.data);
+        endOfBooks=true;
+        page= Number.parseInt(responseData.data.length/10 + 1) - 1;  
       })
     } catch (error) {
       console.error(error.message);
@@ -39,27 +44,30 @@ async function fetchBooks() {
 
   //fetches books page by page 
   async function fetchBooksPage(url) {
+    let resultdata;
     try {
       await sendHttpRequest('GET',url).then((responseData)=>{
-        // console.log(responseData.data);
+        resultdata = responseData;
+        //   
         displayBooksBypage(responseData.data);
       })
     } catch (error) {
       console.error(error.message);
     }
+    return resultdata;
   }
 
   fetchBooksPage(getBooksurl);
 //displaybook function gets books data fetched from db and creates card , instead of adding it to an array
 function displayBooks(books) {
-  console.log(books);
+    
   bookList.innerHTML = '';
   books.forEach((book) => {
     createCard(book);
   });
 }
 function displayBooksBypage(books) {
-  console.log(books); 
+     
   books.forEach((book) => {
     createCard(book);
   });
@@ -69,8 +77,8 @@ function displayBooksBypage(books) {
 async function postOneBook(body){
   try{
     await sendHttpRequest('POST',postBooksUrl,body).then((response)=>{
-      console.log(response);
-      console.log('posted!');
+        
+        
     });
   }catch(err){
     console.error(err.message);
@@ -92,9 +100,7 @@ async function createCard(book){
       newdate = day+" "+month+" "+year;
   }
   let bookImageObj = await sendHttpRequest('GET' , `https://www.googleapis.com/books/v1/volumes?q=${book.title}`);
-  let imageLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo && bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.imageLinks.thumbnail) ? bookImageObj.items[0].volumeInfo.imageLinks.thumbnail : `./assets/book.svg`;
-  // let imageLink = (bookImageObj.items[0].volumeInfo.imageLinks.thumbnail)!=null?bookImageObj.items[0].volumeInfo.imageLinks.thumbnail:`./assets/book.svg`;
-  // let imageLink = bookImageObj.items[0].volumeInfo.imageLinks.thumbnail; //BooksPage.js:96  Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'thumbnail')at createCard (BooksPage.js:96:63) error😢
+  let imageLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.imageLinks.thumbnail) ? bookImageObj.items[0].volumeInfo.imageLinks.thumbnail : `./assets/book.svg`;
   const bookElement = document.createElement('div');
   bookElement.innerHTML = `<div class="bookelement">
   <div class="booktop">
@@ -136,7 +142,7 @@ $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
     $("#book-list .bookelement").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      $(this).toggle($(this).text().trim().replace("Description:", "").toLowerCase().indexOf(value) > -1);
       // Update the "Showing results" message
       updateRes();
       
@@ -157,7 +163,6 @@ searchfocus.addEventListener("focus", function() {
 });
 
 searchfocus.addEventListener("blur", function() {
-  
   if(!searchfocus.value) {showres.classList.remove('visible');
   showres.style.display = 'none';}
 });
@@ -175,7 +180,7 @@ function updateRes(){
 //sorting
 function sortByTitle() {
   let bookElements = bookList.querySelectorAll('.bookelement');
-  console.log(bookElements);
+    
   const sortedBooks = Array.from(bookElements)
   .sort((a, b) => a.querySelector('.title').textContent.localeCompare(b.querySelector('.title').textContent));
   sortedBooks.forEach(book => bookList.appendChild(book));
@@ -199,7 +204,7 @@ function sortBySubject() {
   let bookElements = bookList.querySelectorAll('.bookelement');
   const sortedBooks = Array.from(bookElements)
     .sort((a, b) => a.querySelector('.subject').textContent.localeCompare(b.querySelector('.subject').textContent));
-  // console.log(sortedBooks);
+  //   
   sortedBooks.forEach(book => bookList.appendChild(book));
 }
 
@@ -208,7 +213,7 @@ document.querySelector('.sortbox .dropdown-content').addEventListener('click', (
   
   if (event.target.matches('a')) {
     const sortBy = event.target.textContent.toLowerCase();
-    console.log(sortBy);
+      
     if (sortBy === 'title') {
       dropbtn.innerHTML = 'Title';
       sortByTitle();
@@ -247,8 +252,9 @@ dropdownLinks.forEach(link => {
       const publishDate = bookElement.querySelector('.publishdate').textContent.toLowerCase();
       const subject = bookElement.querySelector('.subject').textContent.toLowerCase();
       const desc = bookElement.querySelector('.desc').textContent.toLowerCase();
-      let searchText = document.getElementById(('myInput')).value;
-      console.log(sortBy);
+      let searchText = document.getElementById(('myInput')).value.toLowerCase().trim();
+      desc = desc.trim().slice(13).trim();
+        
       switch (sortBy) {
         case 'title':
           filterdropbtn.innerHTML = 'Title';
@@ -301,18 +307,24 @@ let loading = false;
 
 window.addEventListener('scroll', async (event) => {
  
-  if (window.innerHeight + window.scrollY  >= document.body.offsetHeight && !loading) {
-    console.log("Reached end!");
+  if (!endOfBooks && window.innerHeight + window.scrollY  >= document.body.offsetHeight && !loading ) {
+      
     loading = true; 
-    console.log(loading?"loading":"");
+      
     loadingElem.classList.add('loading');
     page += 1;
-    console.log(page);
-    fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then(()=>{
+      
+    fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then((res)=>{
+          
+        if(res.data.length==0){
+          endOfBooks=true;
+          page-=1
+        }
         loadingElem.classList.remove('loading');
         loading = false;
     });
   }
+
 });
 
 
@@ -328,17 +340,36 @@ window.addEventListener('scroll', async (event) => {
 //       'X-RapidAPI-Host': 'andruxnet-random-famous-quotes.p.rapidapi.com'
 //     },
 //     }).then(function (response) {
-//     console.log(response.data);
+//       
 //   }).catch(function (error) {
 //     console.error(error);
 //   });
 
 // }
+function disableScroll() {
+  
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
+  window.onscroll = () => {
+    window.scrollTo({
+      top: scrollTop,
+      left: scrollLeft, 
+      behavior: 'instant'
+    })
+  }
+}
+
+function enableScroll() {
+    
+    window.onscroll = null;
+}
 
 //to post new book data
 let postbox = document.getElementById('postbox');
 postbox.addEventListener('click', () => {
+  disableScroll()
+  endOfBooks=true;
   let dialogBox = document.createElement('div');
   dialogBox.setAttribute('id', 'dialog-box');
   dialogBox.innerHTML = `
@@ -348,8 +379,8 @@ postbox.addEventListener('click', () => {
       <input type="text" id="title" name="title">
       <label for="author">Author:</label>
       <input type="text" id="author" name="author">
-      <label for="date">Date: </label>
-      <input type="date" pattern="\d{4}/\d{2}/\d{2}" id="date" name="date">
+      <label for="date">Published Date: </label>
+      <input type="date" pattern="\d{4}/\d{2}/\d{2}" id="date" name="date" max="${new Date().toISOString().slice(0,10)}">
       <label for="subject">Subject:</label>
       <input type="text" id="subject" name="subject">
       <label for="description">Description:</label>
@@ -362,12 +393,14 @@ postbox.addEventListener('click', () => {
 
   let addBookBtn = document.getElementById('add-book');
   addBookBtn.addEventListener('click',async () => {
-    let title = document.getElementById('title').value;
-    let author = document.getElementById('author').value;
-    let date = document.getElementById('date').value;
-    let subject = document.getElementById('subject').value;
-    let description = document.getElementById('description').value;
-    if(title=='' || author=='' || date == '' || subject == '' || description == ''){alert('Enter valid book details!');return}
+    if(!posting){
+      posting = true;
+    let title = document.getElementById('title').value.trim();
+    let author = document.getElementById('author').value.trim();
+    let date = document.getElementById('date').value.trim();
+    let subject = document.getElementById('subject').value.trim();
+    let description = document.getElementById('description').value.trim();
+    if((title+author+date+subject+description).includes('<script>') || title=='' || author=='' || date == '' || subject == '' || description == ''){alert('Enter valid book details!');return}
       else{let obj = {
         title : title,
         author : author, 
@@ -377,14 +410,25 @@ postbox.addEventListener('click', () => {
       }
       await postOneBook(obj).then(()=>{
         alert('Posted successully!');
+        endOfBooks=false;
       }).catch((err)=>alert('Something went wrong!' + err.message));
-      dialogBox.remove();}
-      });
+      dialogBox.remove();
+      }
+      posting=false;
+      enableScroll();
+      endOfBooks=false;
+    }
+  });
 
   let cancelBtn = document.getElementById('cancel');
   cancelBtn.addEventListener('click', () => {
     dialogBox.remove();
+    enableScroll();
+    endOfBooks=false;
   });
+
 });
+
+
 
 //end of javascript

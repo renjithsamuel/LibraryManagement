@@ -1,11 +1,12 @@
   :root {
     /* rgba(166, 233, 255, 0.642) */
-    --primary-color: rgba(176, 235, 255, 0.641);
+    /* rgba(176, 235, 255, 0.641) */
+    --primary-color: rgba(176, 235, 255, 0.641) ;
     --secondary-color: #6c757d;
     --accent-color: #b8b8ba ;
     --neutral-color: #f8f9fa;
     --body-color : #F0FEFF;
-    --border-radius : 20px;
+    --border-radius : 15px;
     --box-shadow-smooth-hover:   0 2.8px 2.2px rgba(0, 0, 0, 0.034),
                                   0 6.7px 5.3px rgba(0, 0, 0, 0.048),
                                   0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -653,6 +654,7 @@ height: auto;
 
 /* loading animation */
 .loading {
+  display: flex  !important;
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -715,13 +717,13 @@ height: auto;
 
 #dialog-content {
   position: absolute;
-  top: 20vh;
-  left: 60vh;
+  top: 10vh;
+  left: 35vw;
   transform: translate(-50%, -50%);
   background-color: var(--neutral-color);
   padding: 20px;
   width: 30vw;
-  height: 66vh;
+  height: 75vh;
   border-radius: var(--border-radius);
   
 }
@@ -743,9 +745,9 @@ height: auto;
   margin-left: 2vw;
   width: 80%;
   padding: 5px;
-  height: 3vh;
+  height: 5vh;
   margin-bottom: 10px;
-  border-radius: var(--border-radius);
+  border-radius: 10px;
   text-indent: 10px;
 }
 
@@ -860,8 +862,8 @@ height: auto;
 
   .sortbox .dropdown-content{
     font-size: 25px;
-    width: 15vw;
-    border-radius: 50px;
+    width: 7vw;
+    border-radius: 35px;
   }
 
   #showreswrapper{
@@ -872,13 +874,13 @@ height: auto;
 
   .filterforsearch .dropbtn{
     font-size: 25px;
-    width: 18vw;
+    width: 7vw;
     border-radius: 50px;
   } 
 
   .filterforsearch .dropdown-content{
     font-size: 25px;
-    width: 18vw;
+    width: 7vw;
     border-radius: 50px;
   }
 
@@ -894,6 +896,18 @@ height: auto;
       height: 30vh;
       margin: 25px;
       border-radius: 50px;
+  }
+
+  #dialog-content {
+    position: absolute;
+    top: 10vh;
+    left: 30vw;
+    transform: translate(-50%, -50%);
+    background-color: var(--neutral-color);
+    padding: 20px;
+    width: 30vw;
+    height: 55vh;
+    border-radius: 20px;
   }
 }
 
@@ -980,6 +994,18 @@ height: auto;
   .bookelement{
       width: 25vw;
       margin: 25px;
+  }
+
+  #dialog-content {
+    position: absolute;
+    top: 10vh;
+    left: 15vw;
+    transform: translate(-50%, -50%);
+    background-color: var(--neutral-color);
+    padding: 20px;
+    width: 65vw;
+    height: 75vh;
+    border-radius: var(--border-radius);
   }
 
 }
@@ -1078,6 +1104,18 @@ height: auto;
   .bookelement{
       width: 40vw;
       margin: 25px;
+  }
+
+  #dialog-content {
+    position: absolute;
+    top: 10vh;
+    left: 15vw;
+    transform: translate(-50%, -50%);
+    background-color: var(--neutral-color);
+    padding: 20px;
+    width: 65vw;
+    height: 75vh;
+    border-radius: var(--border-radius);
   }
 
 }

@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const {getBooks , postBooks , postManyBooks,getBooksPage} = require('./controller/Bookscontroller');
 const helmet = require('helmet');
+const config = require('config');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
 //mongo db connection 
-mongoose.connect('mongodb+srv://ranjithsamuelking:Samking123@cluster0.gp8dend.mongodb.net/Library?retryWrites=true&w=majority', {
+mongoose.connect(`mongodb+srv://${config.get('DBNAME')}:${config.get('DBPASSWORD')}@cluster0.gp8dend.mongodb.net/Library?retryWrites=true&w=majority`, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
