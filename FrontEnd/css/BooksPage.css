@@ -775,7 +775,127 @@ height: auto;
 }
 
 
+@media only screen and (min-width: 2000px) {
+  *{
+    font-size: 25px;
+  }
 
+  .navleft{
+    font-size: 50px;
+  }
+  .navright{
+    font-size: 50px;
+    margin-left:  65vw;
+    width: 25vw;
+  }
+
+  .username{
+   /* width:  ; */
+   margin-right: 2vw;
+  }
+
+  .navicon{
+    margin-left: 0;
+  }
+
+  .topelements{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    width: 100%;
+  }
+
+  .sloganleft{
+    text-align: center;
+    font-size: 30px;
+    margin-left: 5vw;
+    width: 65vw;
+    padding: 5px;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+
+  .sloganleft:hover{
+    font-size: 40px;
+  }
+
+  .filterright{
+  
+    margin-left: 35vw;
+    width: 80vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .searchbox{
+    font-size: 25px;
+    border-radius: 50px;
+    width: 17vw;
+  }
+  .searchbox input{
+    font-size: 25px;
+    /* margin-left: 5vw; */
+    border-radius: 50px;
+    width: 15vw;
+  }
+
+  .sortbox{
+    margin-left: 0vw;
+    margin-right: 0vw;
+  }
+
+  .sortbox .dropbtn{
+    font-size: 25px;
+    border-radius: 50px;
+    width: 7vw;
+  }
+
+  .postbox{
+    margin-left: 2vw;
+    width: 5vw;
+    border-radius: 50px;
+  }
+
+  .sortbox .dropdown-content{
+    font-size: 25px;
+    width: 15vw;
+    border-radius: 50px;
+  }
+
+  #showreswrapper{
+    width: 50vw;
+    margin-left: 20vw;
+    border-radius: 50px;
+  }
+
+  .filterforsearch .dropbtn{
+    font-size: 25px;
+    width: 18vw;
+    border-radius: 50px;
+  } 
+
+  .filterforsearch .dropdown-content{
+    font-size: 25px;
+    width: 18vw;
+    border-radius: 50px;
+  }
+
+  .bookswrapper{
+    width: 100%;
+    padding: 2vw;
+    border-radius: 50px;
+  }
+
+  .bookelement{
+      font-size: 25px;
+      width: 15vw;
+      height: 30vh;
+      margin: 25px;
+      border-radius: 50px;
+  }
+}
 
 /* for fairly small displays 900px*/
 @media only screen and (max-width: 900px) {
