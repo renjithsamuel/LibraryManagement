@@ -255,7 +255,6 @@ dropdownLinks.forEach(link => {
       let searchText = document.getElementById(('myInput')).value.toLowerCase().trim();
       // desc = desc.trim().slice(0,13).trim();
       desc = desc.replace('description:', '').trim();
-        console.log(desc);
       switch (sortBy) {
         case 'title':
           filterdropbtn.innerHTML = 'Title';
