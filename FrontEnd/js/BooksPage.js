@@ -251,10 +251,11 @@ dropdownLinks.forEach(link => {
       const author = bookElement.querySelector('.author').textContent.toLowerCase();
       const publishDate = bookElement.querySelector('.publishdate').textContent.toLowerCase();
       const subject = bookElement.querySelector('.subject').textContent.toLowerCase();
-      const desc = bookElement.querySelector('.desc').textContent.toLowerCase();
+      let desc = bookElement.querySelector('.desc').textContent.toLowerCase();
       let searchText = document.getElementById(('myInput')).value.toLowerCase().trim();
-      desc = desc.trim().slice(13).trim();
-        
+      // desc = desc.trim().slice(0,13).trim();
+      desc = desc.replace('description:', '').trim();
+        console.log(desc);
       switch (sortBy) {
         case 'title':
           filterdropbtn.innerHTML = 'Title';
