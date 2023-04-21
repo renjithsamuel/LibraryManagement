@@ -774,3 +774,250 @@ height: auto;
   background-color: #888;
 }
 
+
+
+
+/* for fairly small displays 900px*/
+@media only screen and (max-width: 900px) {
+  .navright{
+    margin-left: 45vw;
+    width: max-content;
+  }
+
+  .topelements{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+  }
+
+  .sloganleft{
+    width: max-content;
+    padding: 5px;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+
+  .filterright{
+    margin-left: 5vw;
+    width: 80vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .searchbox{
+    margin-left: 7vw;
+
+    width: 26vw;
+    
+  }
+  .searchbox input{
+    /* margin-left: 5vw; */
+    width: 27vw;
+  }
+
+  .sortbox{
+    margin-left: 0.5vw;
+    margin-right: 7vw;
+  }
+
+  .sortbox .dropbtn{
+  
+    width: 15vw;
+  }
+
+  .postbox{
+    margin-left: 2vw;
+    width: 15vw;
+  }
+
+  .sortbox .dropdown-content{
+    width: 15vw;
+  }
+
+  #showreswrapper{
+    width: 50vw;
+    margin-left: 20vw;
+  }
+
+  .filterforsearch .dropbtn{
+    width: 18vw;
+  } 
+
+  .filterforsearch .dropdown-content{
+    width: 18vw;
+
+  }
+
+  .bookswrapper{
+    width: 100%;
+    padding: 2vw;
+  }
+
+  .bookelement{
+      width: 25vw;
+      margin: 25px;
+  }
+
+}
+
+
+/* for small displays 600px*/
+@media only screen and (max-width: 600px) {
+  .navleft{
+    font-size: 20px;
+  }
+  .navright{
+    font-size: 13px;
+    margin-left:10vw;
+    width: 25vw;
+  }
+
+  .username{
+   width:  26vw;
+   margin-right: 0vw;
+  }
+
+  .topelements{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+  }
+
+  .sloganleft{
+    display: none;
+    width: max-content;
+    padding: 5px;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+  }
+
+  .filterright{
+    margin-left: 5vw;
+    width: 80vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .searchbox{
+    margin-left: 5vw;
+
+    width: 22vw;
+    
+  }
+  .searchbox input{
+    /* margin-left: 5vw; */
+    width: 22vw;
+  }
+
+  .sortbox{
+    margin-left: 1.5vw;
+    margin-right: 7vw;
+  }
+
+  .sortbox .dropbtn{
+  
+    width: 15vw;
+  }
+
+  .postbox{
+    margin-left: 2vw;
+    width: 15vw;
+  }
+
+  .sortbox .dropdown-content{
+    width: 15vw;
+  }
+
+  #showreswrapper{
+    width: 50vw;
+    margin-left: 20vw;
+  }
+
+  .filterforsearch .dropbtn{
+    width: 18vw;
+  } 
+
+  .filterforsearch .dropdown-content{
+    width: 18vw;
+
+  }
+
+  .bookswrapper{
+    width: 100%;
+    padding: 2vw;
+  }
+
+  .bookelement{
+      width: 40vw;
+      margin: 25px;
+  }
+
+}
+
+
+
+/* for really small displays 500px*/
+@media only screen and (max-width: 500px) {
+  .navright{
+    margin-left: 32vw;
+    width: max-content;
+  }
+
+  .sortbox{
+    margin-left: 1.5vw;
+    margin-right: 13vw;
+  }
+
+  .sortbox .dropbtn{
+  
+    width: 20vw;
+  }
+
+  .sortbox .dropdown-content{
+    width: 20vw;
+    margin-left: 1.5vw;
+    margin-right: 13vw;
+  }
+
+  .postbox{
+    margin-left: 2vw;
+    width: 13vw;
+  }
+
+  .showres{
+    width: 45vw;
+  }
+
+  .filterforsearch .dropbtn{
+    width: 24vw;
+  } 
+
+  .filterforsearch .dropdown-content{
+    width: 24vw;
+
+  }
+/*  */
+  .bookswrapper{
+    width: 100%;
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bookelement{
+      width: 70vw;
+      margin: 20px;
+      border-radius: 30px;
+  }
+
+}

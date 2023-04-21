@@ -92,13 +92,14 @@ async function createCard(book){
       newdate = day+" "+month+" "+year;
   }
   let bookImageObj = await sendHttpRequest('GET' , `https://www.googleapis.com/books/v1/volumes?q=${book.title}`);
-  console.log(bookImageObj.items[0].volumeInfo.imageLinks.thumbnail);
-  let imageLink = (bookImageObj.items[0].volumeInfo.imageLinks.thumbnail)?bookImageObj.items[0].volumeInfo.imageLinks.thumbnail:`./assets/book.svg`;
+  let imageLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo && bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.imageLinks.thumbnail) ? bookImageObj.items[0].volumeInfo.imageLinks.thumbnail : `./assets/book.svg`;
+  // let imageLink = (bookImageObj.items[0].volumeInfo.imageLinks.thumbnail)!=null?bookImageObj.items[0].volumeInfo.imageLinks.thumbnail:`./assets/book.svg`;
+  // let imageLink = bookImageObj.items[0].volumeInfo.imageLinks.thumbnail; //BooksPage.js:96  Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'thumbnail')at createCard (BooksPage.js:96:63) error😢
   const bookElement = document.createElement('div');
   bookElement.innerHTML = `<div class="bookelement">
   <div class="booktop">
       <div class="bookimage">
-          <img src=${imageLink} height="80%"  width="80%"  style="border-radius: 10px;">
+          <img src=${imageLink}  alt="book" height="80%"  width="80%"  style="border-radius: 10px;">
       </div>
       <div class="smallinfo">
           <div class="title">
