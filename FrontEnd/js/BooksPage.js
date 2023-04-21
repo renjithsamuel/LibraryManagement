@@ -321,7 +321,7 @@ window.addEventListener('scroll', async (event) => {
 // async function getSlogan(){  
 //   await await fetch("https://andruxnet-random-famous-quotes.p.rapidapi.com/", {    
 //     method: 'GET',
-//     params: {cat: 'famous', count: '10'},
+//     params: {cat: 'famous', count: '1'},
 //     headers: {
 //       'X-RapidAPI-Key': '274c49fc77mshdc27b81036cbb24p14897ajsn4896a',
 //       'X-RapidAPI-Host': 'andruxnet-random-famous-quotes.p.rapidapi.com'
@@ -333,6 +333,8 @@ window.addEventListener('scroll', async (event) => {
 //   });
 
 // }
+
+
 //to post new book data
 let postbox = document.getElementById('postbox');
 postbox.addEventListener('click', () => {
@@ -345,8 +347,8 @@ postbox.addEventListener('click', () => {
       <input type="text" id="title" name="title">
       <label for="author">Author:</label>
       <input type="text" id="author" name="author">
-      <label for="date">Date: (yyyy-mm-dd) </label>
-      <input type="text" id="date" name="date">
+      <label for="date">Date: </label>
+      <input type="date" pattern="\d{4}/\d{2}/\d{2}" id="date" name="date">
       <label for="subject">Subject:</label>
       <input type="text" id="subject" name="subject">
       <label for="description">Description:</label>
@@ -364,19 +366,19 @@ postbox.addEventListener('click', () => {
     let date = document.getElementById('date').value;
     let subject = document.getElementById('subject').value;
     let description = document.getElementById('description').value;
-    if(title==null || author==null || date == null || subject == null || description == null)alert('Enter valid book details!');
-    let obj = {
-      title : title,
-      author : author, 
-      publishedDate : date,
-      subject : subject,
-      desc : description 
-    }
-    await postOneBook(obj).then(()=>{
-      alert('Posted successully!');
-    }).catch((err)=>alert('Something went wrong!' + err.message));
-    dialogBox.remove();
-  });
+    if(title=='' || author=='' || date == '' || subject == '' || description == ''){alert('Enter valid book details!');return}
+      else{let obj = {
+        title : title,
+        author : author, 
+        publishedDate : date,
+        subject : subject,
+        desc : description 
+      }
+      await postOneBook(obj).then(()=>{
+        alert('Posted successully!');
+      }).catch((err)=>alert('Something went wrong!' + err.message));
+      dialogBox.remove();}
+      });
 
   let cancelBtn = document.getElementById('cancel');
   cancelBtn.addEventListener('click', () => {
