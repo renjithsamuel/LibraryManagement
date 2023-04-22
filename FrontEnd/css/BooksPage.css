@@ -1168,6 +1168,12 @@ height: auto;
     border-radius: var(--border-radius);
   }
 
+    .scroll-btn {
+      bottom: 20px;
+      right: 20px;
+    }
+
+
 }
 
 
