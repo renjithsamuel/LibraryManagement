@@ -307,7 +307,7 @@ let loading = false;
 
 window.addEventListener('scroll', async (event) => {
  
-  if (!endOfBooks && window.innerHeight + window.scrollY  >= document.body.offsetHeight && !loading ) {
+  if (!endOfBooks && window.innerHeight + window.scrollY  >= (document.body.offsetHeight - 10 ) && !loading ) {
       
     loading = true; 
       
