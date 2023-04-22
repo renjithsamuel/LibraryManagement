@@ -2,9 +2,12 @@ const bookList = document.getElementById('book-list');
 let page = 1;
 let endOfBooks = false;
 let posting = false;
+let whileadding = false;
 let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`;
 let getAllBooksurl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
+
+
 
 //fetch request function 
 const sendHttpRequest = async (method, url, data) => {
@@ -42,14 +45,20 @@ async function fetchBooks() {
     }
   }
 
+  const loadingElem = document.getElementById('loading');
+  let loading = false;
   //fetches books page by page 
   async function fetchBooksPage(url) {
+    loading = true;
+    loadingElem.classList.add('loading');
     let resultdata;
     try {
       await sendHttpRequest('GET',url).then((responseData)=>{
         resultdata = responseData;
-        //   
+        
         displayBooksBypage(responseData.data);
+        loadingElem.classList.remove('loading');
+        loading = false;
       })
     } catch (error) {
       console.error(error.message);
@@ -302,16 +311,16 @@ dropdownLinks.forEach(link => {
 
 
 //loading animation and generate new data by using fetch 
-const loadingElem = document.getElementById('loading');
-let loading = false;
+
+
 
 window.addEventListener('scroll', async (event) => {
- 
-  if (!endOfBooks && window.innerHeight + window.scrollY  >= (document.body.offsetHeight - 10 ) && !loading ) {
+  scrollFunction();
+  if (!endOfBooks && window.innerHeight + window.scrollY  >= (document.body.offsetHeight - 30 ) && !loading ) {
       
-    loading = true; 
+    // loading = true; 
       
-    loadingElem.classList.add('loading');
+    // loadingElem.classList.add('loading');
     page += 1;
       
     fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then((res)=>{
@@ -320,8 +329,8 @@ window.addEventListener('scroll', async (event) => {
           endOfBooks=true;
           page-=1
         }
-        loadingElem.classList.remove('loading');
-        loading = false;
+        // loadingElem.classList.remove('loading');
+        // loading = false;
     });
   }
 
@@ -368,6 +377,7 @@ function enableScroll() {
 //to post new book data
 let postbox = document.getElementById('postbox');
 postbox.addEventListener('click', () => {
+  whileadding = true;
   disableScroll()
   endOfBooks=true;
   let dialogBox = document.createElement('div');
@@ -417,6 +427,7 @@ postbox.addEventListener('click', () => {
       posting=false;
       enableScroll();
       endOfBooks=false;
+      whileadding = false;
     }
   });
 
@@ -425,10 +436,56 @@ postbox.addEventListener('click', () => {
     dialogBox.remove();
     enableScroll();
     endOfBooks=false;
+    whileadding = false;
   });
 
 });
 
 
+
+//scroll to top and bottom of the screen button 
+let gototop = document.getElementById('go-to-top');
+let gotobottom = document.getElementById('go-to-bottom');
+let prevPageOffset = 0
+function scrollFunction() {
+  if(!whileadding){let currPageOffset =  window.pageYOffset  || document.documentElement.scrollTop;
+  if (currPageOffset<prevPageOffset )  {
+    gototop.style.display = "block";
+    gototop.classList.add("hideScroll");
+    gotobottom.style.display = "none";
+    gotobottom.classList.remove("hideScroll");
+  } else {
+    gotobottom.style.display = "block";
+    gotobottom.classList.add("hideScroll");
+    gototop.style.display = "none";
+    gototop.classList.remove("hideScroll");
+  }
+  prevPageOffset = currPageOffset;}
+}
+if(!whileadding){
+gototop.addEventListener('click', ()=>{
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+});
+
+gototop.addEventListener('mouseenter', ()=>{
+  gototop.classList.remove("hideScroll");
+  gototop.style.display = 'block';
+});
+gototop.addEventListener('mouseleave', ()=>{
+  gototop.classList.add("hideScroll");
+});
+
+gotobottom.addEventListener('click' , () =>{
+  window.scrollTo(0,document.body.scrollHeight);
+})
+
+gotobottom.addEventListener('mouseenter' , () =>{
+  gotobottom.classList.remove("hideScroll");
+  gotobottom.style.display = 'block';
+})
+gotobottom.addEventListener('mouseleave' , () =>{
+  gotobottom.classList.add("hideScroll");
+})}
 
 //end of javascript
