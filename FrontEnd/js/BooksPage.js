@@ -465,30 +465,36 @@ function scrollFunction() {
   }
   prevPageOffset = currPageOffset;}
 }
-if(!whileadding){
+
 gototop.addEventListener('click', ()=>{
+  if(!whileadding){
   document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+  document.documentElement.scrollTop = 0;}
 });
 
 gototop.addEventListener('mouseenter', ()=>{
+  if(!whileadding){
   gototop.classList.remove("hideScroll");
-  gototop.style.display = 'block';
+  gototop.style.display = 'block';}
 });
 gototop.addEventListener('mouseleave', ()=>{
-  gototop.classList.add("hideScroll");
+  if(!whileadding){
+  gototop.classList.add("hideScroll");}
 });
 
 gotobottom.addEventListener('click' , () =>{
-  window.scrollTo(0,document.body.scrollHeight);
+  if(!whileadding){
+  window.scrollTo(0,document.body.scrollHeight);}
 })
 
 gotobottom.addEventListener('mouseenter' , () =>{
+  if(!whileadding){
   gotobottom.classList.remove("hideScroll");
-  gotobottom.style.display = 'block';
+  gotobottom.style.display = 'block';}
 })
 gotobottom.addEventListener('mouseleave' , () =>{
-  gotobottom.classList.add("hideScroll");
-})}
+  if(!whileadding){
+  gotobottom.classList.add("hideScroll");}
+})
 
 //end of javascript
