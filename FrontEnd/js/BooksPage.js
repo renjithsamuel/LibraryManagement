@@ -26,9 +26,12 @@ const sendHttpRequest = async (method, url, data) => {
     });
     return returndata;
 }
-
+const loadingElem = document.getElementById('loading');
+let loading = false;
 //fetch books function that is not used currently
 async function fetchBooks() {
+  loading = true;
+  loadingElem.classList.add('loading');
     try {
       await sendHttpRequest('GET',getAllBooksurl).then((responseData)=>{
           
@@ -43,10 +46,11 @@ async function fetchBooks() {
     } catch (error) {
       console.error(error.message);
     }
+    loadingElem.classList.remove('loading');
+    loading = false;
   }
 
-  const loadingElem = document.getElementById('loading');
-  let loading = false;
+
   //fetches books page by page 
   async function fetchBooksPage(url) {
     loading = true;
@@ -57,12 +61,13 @@ async function fetchBooks() {
         resultdata = responseData;
         
         displayBooksBypage(responseData.data);
-        loadingElem.classList.remove('loading');
-        loading = false;
+
       })
     } catch (error) {
       console.error(error.message);
     }
+    loadingElem.classList.remove('loading');
+    loading = false;
     return resultdata;
   }
 
