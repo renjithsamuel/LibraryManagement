@@ -7,8 +7,6 @@ let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?p
 let getAllBooksurl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 
-
-
 //fetch request function 
 const sendHttpRequest = async (method, url, data) => {
     let returndata;

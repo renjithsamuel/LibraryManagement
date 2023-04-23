@@ -795,10 +795,11 @@ height: auto;
   border: none;
   border-radius: var(--border-radius);
   padding: 2vh;
-  z-index: 999;
+  z-index: 10;
   position: sticky;
   bottom: 5vh;
-  left: 95vw;
+  right:  4vw;
+  margin-left: auto;
   transition: all 0.3s ease-in-out;
 }
 
