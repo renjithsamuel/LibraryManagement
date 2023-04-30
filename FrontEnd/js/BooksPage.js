@@ -6,7 +6,8 @@ let whileadding = false;
 let getBooksurl = `https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`;
 let getAllBooksurl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
-
+let permanantDataArray  = [];
+let dataArray = [];
 //fetch request function 
 const sendHttpRequest = async (method, url, data) => {
     let returndata;
@@ -17,13 +18,17 @@ const sendHttpRequest = async (method, url, data) => {
     },
     body: JSON.stringify(data),
     })
-    .then((response) => returndata =  response.json())
+    .then((response) => {
+     
+      returndata =  response.json()})
     .catch((error) => {
       console.log("429 - Too Many Request Error - Not a Problem - Try Again Later - 👍");
       // console.error("Error:", error);
     });
     return returndata;
 }
+
+
 const loadingElem = document.getElementById('loading');
 let loading = false;
 //fetch books function that is not used currently
@@ -34,10 +39,15 @@ async function fetchBooks() {
       await sendHttpRequest('GET',getAllBooksurl).then((responseData)=>{
           
         const arr = responseData.data;
-        const res =  arr.filter(book => book["author"].includes("Dan"));
-          
-          
-        displayBooks(responseData.data);
+        // const res =  arr.filter(book => book["author"].includes("Dan"));
+        // displayBooks(responseData.data);
+        responseData.data.map((e)=>{
+          permanantDataArray.push(e);
+        });
+        (responseData.data).map(e =>{
+          dataArray.push(e);
+        });
+        displayBooksUsingArray();       
         endOfBooks=true;
         page= Number.parseInt(responseData.data.length/10 + 1) - 1;  
       })
@@ -57,9 +67,17 @@ async function fetchBooks() {
     try {
       await sendHttpRequest('GET',url).then((responseData)=>{
         resultdata = responseData;
-        
-        displayBooksBypage(responseData.data);
-
+        // displayBooksBypage(responseData.data);
+        // (responseData.data).map((e)=>{
+        //   permanantDataArray.push(e);
+        // });
+        // (responseData.data).map(e => {
+        //   dataArray.push(e);
+        // });
+        permanantDataArray = [...permanantDataArray,...responseData.data];
+        dataArray = [...responseData.data];
+        // console.log(dataArray);
+        displayBooksUsingArray();
       })
     } catch (error) {
       console.error(error.message);
@@ -69,28 +87,34 @@ async function fetchBooks() {
     return resultdata;
   }
 
-  fetchBooksPage(getBooksurl);
+fetchBooksPage(getBooksurl);
 //displaybook function gets books data fetched from db and creates card , instead of adding it to an array
 function displayBooks(books) {
-    
   bookList.innerHTML = '';
   books.forEach((book) => {
     createCard(book);
   });
+  updateRes();
 }
 function displayBooksBypage(books) {
-     
   books.forEach((book) => {
     createCard(book);
   });
+  updateRes();
+}
+
+function displayBooksUsingArray() {
+    dataArray.forEach((book) => {
+    createCard(book);
+  });
+  updateRes();
 }
 
 //post book function  
 async function postOneBook(body){
   try{
     await sendHttpRequest('POST',postBooksUrl,body).then((response)=>{
-        
-        
+        // console.log('');
     });
   }catch(err){
     console.error(err.message);
@@ -103,17 +127,19 @@ async function createCard(book){
 
   let newdate = '';
   if (date) {
-      const day = date.toLocaleDateString('en-US', {
-          day: 'numeric',});
-      const month = date.toLocaleDateString('en-US', {
-          month: 'short',});
-      const year = date.toLocaleDateString('en-US', {
-          year: 'numeric',});
-      newdate = day+" "+month+" "+year;
+      newdate = date.toLocaleDateString('en-US', {
+          day: 'numeric',month : 'short' , year: 'numeric'});
+      // const month = date.toLocaleDateString('en-US', {
+      //     month: 'short',});
+      // const year = date.toLocaleDateString('en-US', {
+      //     year: 'numeric',});
+      // newdate = day+" "+month+" "+year;
+      
   }
   let bookImageObj = await sendHttpRequest('GET' , `https://www.googleapis.com/books/v1/volumes?q=${book.title}`);
   let imageLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.imageLinks.thumbnail) ? bookImageObj.items[0].volumeInfo.imageLinks.thumbnail : `./assets/book.svg`;
   const bookElement = document.createElement('div');
+  
   bookElement.innerHTML = `<div class="bookelement">
   <div class="booktop">
       <div class="bookimage">
@@ -145,22 +171,34 @@ async function createCard(book){
   </div>`
   bookList.appendChild(bookElement);
   updateRes();
+  // BookMap.set(book.id,bookElement);
+  // return bookElement;
 }
 
 
-
-// search using jquery credits - w3schools
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#book-list .bookelement").filter(function() {
-      $(this).toggle($(this).text().trim().replace("Description:", "").toLowerCase().indexOf(value) > -1);
-      // Update the "Showing results" message
-      updateRes();
-      
-    });
+function updateCard(bookElement, book) {
+  // Update title
+  bookElement.querySelector('.title').textContent = book.title;
+  
+  // Update author
+  bookElement.querySelector('.author').textContent = book.author;
+  
+  // Update publish date
+  const date = new Date(book.publishedDate);
+  const newdate = date.toLocaleDateString('en-US', {
+    day: 'numeric',month : 'short' , year: 'numeric'
   });
-});
+  bookElement.querySelector('.publishdate').textContent = newdate;
+  
+  // Update subject
+  bookElement.querySelector('.subject').textContent = book.subject;
+  
+  // Update description
+  bookElement.querySelector('.desc').innerHTML = `
+    <strong>Description:</strong><br>
+    ${book.desc}
+  `;
+}
 
 //to show and hide results count from search
 let showres = document.getElementById('showreswrapper');
@@ -182,9 +220,9 @@ searchfocus.addEventListener("blur", function() {
 
 //to update count results of search
 function updateRes(){
-  const visibleCount = Array.from(document.querySelectorAll("#book-list .bookelement"))
-  .filter(element => element.style.display !== "none").length;
-
+  // const visibleCount = Array.from(document.querySelectorAll("#book-list .bookelement"))
+  // .filter(element => element.style.display !== "none").length;
+  const visibleCount = dataArray.length;
   const showRes = document.querySelector(".showres");
   showRes.textContent = `Showing ${visibleCount} results from `;
 }
@@ -192,11 +230,10 @@ function updateRes(){
 //sorting
 function sortByTitle() {
   let bookElements = bookList.querySelectorAll('.bookelement');
-    
   const sortedBooks = Array.from(bookElements)
   .sort((a, b) => a.querySelector('.title').textContent.localeCompare(b.querySelector('.title').textContent));
   sortedBooks.forEach(book => bookList.appendChild(book));
-}
+} 
 
 function sortByAuthor() {
   let bookElements = bookList.querySelectorAll('.bookelement');
@@ -222,7 +259,7 @@ function sortBySubject() {
 
 let dropbtn  = document.querySelector('.sortbox .dropbtn');
 document.querySelector('.sortbox .dropdown-content').addEventListener('click', (event) => {
-  
+  event.preventDefault();
   if (event.target.matches('a')) {
     const sortBy = event.target.textContent.toLowerCase();
       
@@ -247,117 +284,6 @@ document.querySelector('.sortbox .dropdown-content').addEventListener('click', (
 });
 
 
-
-//filter search results function - inefficient must switch to better way
-const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
-let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
-dropdownLinks.forEach(link => {
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    const sortBy = event.target.dataset.sortby;
-
-    const bookElements = document.querySelectorAll('.bookelement');
-    bookElements.forEach(bookElement => {
-      const title = bookElement.querySelector('.title').textContent.toLowerCase();
-      const author = bookElement.querySelector('.author').textContent.toLowerCase();
-      const publishDate = bookElement.querySelector('.publishdate').textContent.toLowerCase();
-      const subject = bookElement.querySelector('.subject').textContent.toLowerCase();
-      let desc = bookElement.querySelector('.desc').textContent.toLowerCase();
-      let searchText = document.getElementById(('myInput')).value.toLowerCase().trim();
-      // desc = desc.trim().slice(0,13).trim();
-      desc = desc.replace('description:', '').trim();
-      switch (sortBy) {
-        case 'title':
-          filterdropbtn.innerHTML = 'Title';
-          bookElement.style.display = title.includes(searchText) ? 'block' : 'none';
-          break;
-        case 'author':
-          filterdropbtn.innerHTML = 'Author';
-          bookElement.style.display = author.includes(searchText) ? 'block' : 'none';
-          break;
-        case 'date':
-          filterdropbtn.innerHTML = 'Date';
-          bookElement.style.display = publishDate.includes(searchText) ? 'block' : 'none';
-          break;
-        case 'subject':
-          filterdropbtn.innerHTML = 'Subject';
-          bookElement.style.display = subject.includes(searchText) ? 'block' : 'none';
-          break;
-        case 'description':
-          filterdropbtn.innerHTML = 'Description';
-          bookElement.style.display = desc.includes(searchText) ? 'block' : 'none';
-          break;
-        case 'all':
-          filterdropbtn.innerHTML = 'All';
-          const allFields = title + author + publishDate + subject + desc;
-          bookElement.style.display = allFields.includes(searchText) ? 'block' : 'none';
-          break;
-        default:
-          filterdropbtn.innerHTML = 'All';
-          fetchBooks();
-          bookElement.style.display = 'block';
-        
-      }
-
-      updateRes();
-    });
-  });
-});
-
-// setTimeout(()=>{
-//   const currlen = document.querySelectorAll('.bookelement').length;
-// const showres = document.querySelector('.showres');
-// showres.innerHTML = `Showing results ${currlen} from `;
-// },5000);
-
-
-
-//loading animation and generate new data by using fetch 
-
-
-
-window.addEventListener('scroll', async (event) => {
-  scrollFunction();
-  if (!endOfBooks && window.innerHeight + window.scrollY  >= (document.body.offsetHeight - 30 ) && !loading ) {
-      
-    // loading = true; 
-      
-    // loadingElem.classList.add('loading');
-    page += 1;
-      
-    fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then((res)=>{
-          
-        if(res.data.length==0){
-          endOfBooks=true;
-          page-=1
-        }
-        // loadingElem.classList.remove('loading');
-        // loading = false;
-    });
-  }
-
-});
-
-
-//slogan genarator from RapidAPI test failed
-// getSlogan();  
-// //slogan generator
-// async function getSlogan(){  
-//   await await fetch("https://andruxnet-random-famous-quotes.p.rapidapi.com/", {    
-//     method: 'GET',
-//     params: {cat: 'famous', count: '1'},
-//     headers: {
-//       'X-RapidAPI-Key': '274c49fc77mshdc27b81036cbb24p14897ajsn4896a',
-//       'X-RapidAPI-Host': 'andruxnet-random-famous-quotes.p.rapidapi.com'
-//     },
-//     }).then(function (response) {
-//       
-//   }).catch(function (error) {
-//     console.error(error);
-//   });
-
-// }
 function disableScroll() {
   
   let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -373,13 +299,11 @@ function disableScroll() {
 }
 
 function enableScroll() {
-    
     window.onscroll = null;
 }
 
 //to post new book data
-let postbox = document.getElementById('postbox');
-postbox.addEventListener('click', () => {
+document.getElementById('postbox').addEventListener('click', () => {
   whileadding = true;
   disableScroll()
   endOfBooks=true;
@@ -442,9 +366,25 @@ postbox.addEventListener('click', () => {
     whileadding = false;
   });
 
+  document.getElementById('dialog-box').addEventListener('click', (e) => {
+    // dialogBox.childNodes.forEach((node) => {
+    //   node.
+    // })
+    document.getElementById('dialog-box').remove();
+    enableScroll();
+    endOfBooks=false;
+    whileadding = false;
+  })
 });
 
-
+document.body.addEventListener('keydown', (e) => {
+  if(whileadding && e.key === 'Escape'){
+    document.getElementById('dialog-box').remove();
+    enableScroll();
+    endOfBooks=false;
+    whileadding = false;
+  }
+})
 
 //scroll to top and bottom of the screen button 
 let gototop = document.getElementById('go-to-top');
@@ -497,4 +437,275 @@ gotobottom.addEventListener('mouseleave' , () =>{
   gotobottom.classList.add("hideScroll");}
 })
 
+
+
+
+// search and search filtering with debouncing 
+
+let sortBy = 'all';
+document.getElementById('myInput').addEventListener('input',(e)=>{
+  updateSearch(e.target.value);
+});
+
+let updateSearch = debounce((text)=>{
+
+  endOfBooks = true;
+  let searchtext = text.toString().toLowerCase().trim();
+  
+  dataArray = permanantDataArray.filter((e)=>{
+    let titleText = e.title.toString().toLowerCase().trim();
+    let subjectText = e.subject.toString().toLowerCase().trim();
+    let descText = e.desc.toString().toLowerCase().trim();
+    let authorText = e.author.toString().toLowerCase().trim();
+    let date  = new Date(e.publishedDate);
+    let PublishdateText = date.toLocaleDateString('en-US',{day:'numeric',month:'short',year : 'numeric'}).toLocaleLowerCase().trim();
+    let all = titleText + subjectText + descText + authorText + PublishdateText ;
+    if(sortBy=='all' &&  all.includes(searchtext)){
+      return true;
+    }
+    else{
+        if(sortBy == 'title' && titleText.includes(searchtext)){
+          return true;
+        }
+        else if(sortBy == 'author' && authorText.includes(searchtext)){
+          return true;
+        }
+        else if(sortBy == 'date' && PublishdateText.includes(searchtext)){
+          return true;
+        }
+        else if(sortBy == 'subject' && subjectText.includes(searchtext)){
+          return true;
+        }
+        else if(sortBy == 'description' && descText.includes(searchtext)){
+          return true;
+        }
+    }
+  });
+  // console.log(dataArray);
+  bookList.innerHTML = '';
+  displayBooksUsingArray();
+  endOfBooks = false;
+})
+
+
+const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
+let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
+dropdownLinks.forEach(link => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    sortBy = event.target.dataset.sortby;
+    // console.log(sortBy);
+    let value = document.getElementById('myInput').value;
+      updateSearch(value);
+    
+    if(sortBy=='title')filterdropbtn.innerHTML = 'title';
+    else if(sortBy=='description')filterdropbtn.innerHTML = 'description';
+    else if(sortBy=='author')filterdropbtn.innerHTML = 'author';
+    else if(sortBy=='subject')filterdropbtn.innerHTML = 'subject';
+    else if(sortBy=='date')filterdropbtn.innerHTML = 'date';
+    else filterdropbtn.innerHTML = 'all';
+  })
+})
+
+function debounce(cb,delay=1000){
+  let timeout;
+  return (...args)=>{
+    clearTimeout(timeout);
+    timeout = setTimeout(()=>{
+      cb(...args);
+    },delay);
+  }
+}
+
+
+function throttle(cb,delay = 1000){
+  let shouldWait = false;
+  let waitingArgs ;
+  let timeoutfunc = ()=>{
+      if(waitingArgs==null){
+      shouldWait = false;}
+      else{
+          cb(...waitingArgs);
+          waitingArgs = null;
+           setTimeout(timeoutfunc,delay);
+      }
+  }
+  return (...args) => {
+      if(shouldWait){
+          waitingArgs = args;
+          return;
+      }
+      cb(...args)
+      shouldWait = true;
+      setTimeout(timeoutfunc,delay)
+  }
+}
+
+//scroll functions into throttling
+let allScrollFunctions = throttle(async (event) => {
+    // console.log(window.scrollY);
+    scrollFunction();
+    if (!endOfBooks && window.innerHeight + window.scrollY  >= (document.body.offsetHeight - 30 ) && !loading ) {
+      page += 1;
+    await fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then((res)=>{
+          if(res.data.length==0){
+            endOfBooks=true;
+            page-=1
+          }
+      });
+    }
+},300);
+
+//loading animation and generate new data by using fetch 
+window.addEventListener('scroll',allScrollFunctions);
 //end of javascript
+
+
+
+// commented out functions for future reference
+
+// search api - working perfect
+// let searchBy = 'all';
+// document.getElementById('myInput').addEventListener('input',(e)=>updateSearchApi(e.target.value));
+// let updateSearchApi = debounce(async(text)=>{
+//   let searchText = text.toLowerCase().trim();
+//     if(searchText==''){
+//       dataArray = []
+//       permanantDataArray.map((e)=>{
+//         dataArray.push(e);
+//       })
+//       displayBooksUsingArray();
+//       return;
+//     }
+//   await sendHttpRequest('GET', `https://librarymanagementnode.onrender.com/api/v1/searchBooks?searchQuery=${searchText}&searchBy=${searchBy}`)
+//   .then((response)=>{
+//     dataArray = [];
+//     console.log(response);
+//     response.map((e)=>{
+//       dataArray.push(e);
+//     });
+//     bookList.innerHTML = '';
+//     displayBooksUsingArray();
+//     return;
+//   })
+// })
+
+// const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
+// let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
+// dropdownLinks.forEach(link => {
+//   link.addEventListener('click', (event) => {
+//     event.preventDefault();
+//     searchBy = event.target.dataset.sortby;
+//     // console.log(sortBy);
+//     let value = document.getElementById('myInput').value;
+//     updateSearchApi(value);
+    
+//     if(searchBy=='title')filterdropbtn.innerHTML = 'title';
+//     else if(searchBy=='description')filterdropbtn.innerHTML = 'description';
+//     else if(searchBy=='author')filterdropbtn.innerHTML = 'author';
+//     else if(searchBy=='subject')filterdropbtn.innerHTML = 'subject';
+//     else if(searchBy=='date')filterdropbtn.innerHTML = 'date';
+//     else filterdropbtn.innerHTML = 'all';
+//   })
+// })
+
+// dont go below this
+
+
+//filter search results function - inefficient must switch to better way
+// const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
+// let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
+// dropdownLinks.forEach(link => {
+//   link.addEventListener('click', (event) => {
+//     event.preventDefault();
+
+//     const sortBy = event.target.dataset.sortby;
+
+//     const bookElements = document.querySelectorAll('.bookelement');
+//     bookElements.forEach(bookElement => {
+//       const title = bookElement.querySelector('.title').textContent.toLowerCase();
+//       const author = bookElement.querySelector('.author').textContent.toLowerCase();
+//       const publishDate = bookElement.querySelector('.publishdate').textContent.toLowerCase();
+//       const subject = bookElement.querySelector('.subject').textContent.toLowerCase();
+//       let desc = bookElement.querySelector('.desc').textContent.toLowerCase();
+//       let searchText = document.getElementById(('myInput')).value.toLowerCase().trim();
+//       // desc = desc.trim().slice(0,13).trim();
+//       desc = desc.replace('description:', '').trim();
+//       switch (sortBy) {
+//         case 'title':
+//           filterdropbtn.innerHTML = 'Title';
+//           bookElement.style.display = title.includes(searchText) ? 'block' : 'none';
+//           break;
+//         case 'author':
+//           filterdropbtn.innerHTML = 'Author';
+//           bookElement.style.display = author.includes(searchText) ? 'block' : 'none';
+//           break;
+//         case 'date':
+//           filterdropbtn.innerHTML = 'Date';
+//           bookElement.style.display = publishDate.includes(searchText) ? 'block' : 'none';
+//           break;
+//         case 'subject':
+//           filterdropbtn.innerHTML = 'Subject';
+//           bookElement.style.display = subject.includes(searchText) ? 'block' : 'none';
+//           break;
+//         case 'description':
+//           filterdropbtn.innerHTML = 'Description';
+//           bookElement.style.display = desc.includes(searchText) ? 'block' : 'none';
+//           break;
+//         case 'all':
+//           filterdropbtn.innerHTML = 'All';
+//           const allFields = title + author + publishDate + subject + desc;
+//           bookElement.style.display = allFields.includes(searchText) ? 'block' : 'none';
+//           break;
+//         default:
+//           filterdropbtn.innerHTML = 'All';
+//           fetchBooks();
+//           bookElement.style.display = 'block';
+        
+//       }
+
+//       updateRes();
+//     });
+//   });
+// });
+
+// setTimeout(()=>{
+//   const currlen = document.querySelectorAll('.bookelement').length;
+// const showres = document.querySelector('.showres');
+// showres.innerHTML = `Showing results ${currlen} from `;
+// },5000);
+
+
+//slogan genarator from RapidAPI test failed
+// getSlogan();  
+// //slogan generator
+// async function getSlogan(){  
+//   await await fetch("https://andruxnet-random-famous-quotes.p.rapidapi.com/", {    
+//     method: 'GET',
+//     params: {cat: 'famous', count: '1'},
+//     headers: {
+//       'X-RapidAPI-Key': '274c49fc77mshdc27b81036cbb24p14897ajsn4896a',
+//       'X-RapidAPI-Host': 'andruxnet-random-famous-quotes.p.rapidapi.com'
+//     },
+//     }).then(function (response) {
+//       
+//   }).catch(function (error) {
+//     console.error(error);
+//   });
+
+// }
+
+
+
+  // search using jquery credits - w3schools
+  // $(document).ready(function(){
+  //   $("#myInput").on("keyup", function() {
+  //     var value = $(this).val().toLowerCase();
+  //     $("#book-list .bookelement").filter(function() {
+  //       $(this).toggle($(this).text().trim().replace("Description:", "").toLowerCase().indexOf(value) > -1);
+  //       // Update the "Showing results" message
+  //       updateRes();
+        
+  //     });
+  //   });
+  // });

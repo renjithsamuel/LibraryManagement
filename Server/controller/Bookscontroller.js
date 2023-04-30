@@ -105,3 +105,60 @@ exports.getBooks = async (req,res,next) => {
           res.status(500).json({ message: e.message });
       }
     }
+
+
+    exports.searchBooks = async (req,res,next) =>{
+        const searchText = req.query.searchQuery;
+        const searchBy = req.query.searchBy;
+        try{
+            let results = [] ;
+            if(searchBy==='all'){
+                 resutls = await Books.find({
+                $or: [
+                    { title: { $regex: searchText , $options : "i" } },
+                    { author: { $regex: searchText, $options: "i" } },
+                    { date: { $regex: searchText, $options: "i" } },
+                    { subject: { $regex: searchText, $options: "i" } },
+                    { description: { $regex: searchText, $options: "i" } },
+                  ]
+              });} 
+              else{
+                if(searchBy==='title'){
+                     resutls = await Books.find({title:{$regex : searchText,$options : "i"}});
+                }
+                else if(searchBy === 'author'){
+                    console.log(searchBy);
+                     results = await Books.find({author:{$regex:searchText , $options:"i"}});
+                }
+                else if(searchBy === 'subject'){
+                     results = await Books.find({subject:{$regex:searchText , $options:"i"}});
+                }
+                else if(searchBy === 'date'){
+                     results = await Books.find({publishedDate:{$regex:searchText , $options:"i"}});
+                }
+                else if(searchBy === 'desc'){
+                     results = await Books.find({desc:{$regex:searchText , $options:"i"}});
+                }
+              } 
+            return res.status(200).send(resutls);
+        }catch(err){
+            res.status(500).json({message:err.message});
+        }
+    }
+
+
+
+    exports.loggerFunc = async (req,res,next) => {
+        console.log("logging");
+        console.log(req.method , req.url);
+        next();
+    }
+
+    exports.checkAdmin = (req,res,next) =>{
+        const isAdmin = false;
+        if(!isAdmin){
+            return res.status(403).json({
+                message: "Admin access required!"
+            })
+        }
+    }

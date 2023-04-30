@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const {getBooks , postBooks , postManyBooks,getBooksPage} = require('./controller/Bookscontroller');
+const {getBooks , postBooks , postManyBooks,getBooksPage,searchBooks} = require('./controller/Bookscontroller');
 const helmet = require('helmet');
 const config = require('config');
 
@@ -15,8 +15,6 @@ mongoose.connect(`mongodb+srv://${config.get('DBNAME')}:${config.get('DBPASSWORD
 });
 
 const db = mongoose.connection;
-
-mongoose.set("strictQuery",false);
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
@@ -32,6 +30,7 @@ app.use(express.json());
 app.get('/api/v1/books',getBooks);
 app.get('/api/v1/booksPage',getBooksPage);
 app.post('/api/v1/books',postBooks);
+app.get('/api/v1/searchBooks',searchBooks);
 app.post('/api/v1/manyBooks',postManyBooks);
 // app.delete('/api/v1/books/:id',deleteBooksById);
 // app.delete('/api/v1/books',deleteBooksByBody);
