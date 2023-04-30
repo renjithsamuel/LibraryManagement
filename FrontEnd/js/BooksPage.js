@@ -8,6 +8,7 @@ let getAllBooksurl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 let postBooksUrl = `https://librarymanagementnode.onrender.com/api/v1/books`;
 let permanantDataArray  = [];
 let dataArray = [];
+// the below code doesn't follow much of mnemonics rules i'll update it ASAP
 //fetch request function 
 const sendHttpRequest = async (method, url, data) => {
     let returndata;

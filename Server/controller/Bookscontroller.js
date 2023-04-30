@@ -106,7 +106,7 @@ exports.getBooks = async (req,res,next) => {
       }
     }
 
-
+// Search api included for querying
     exports.searchBooks = async (req,res,next) =>{
         const searchText = req.query.searchQuery;
         const searchBy = req.query.searchBy;
