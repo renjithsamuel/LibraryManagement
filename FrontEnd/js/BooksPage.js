@@ -139,12 +139,12 @@ async function createCard(book){
   }
   let bookImageObj = await sendHttpRequest('GET' , `https://www.googleapis.com/books/v1/volumes?q=${book.title}`);
   let imageLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.imageLinks.thumbnail) ? bookImageObj.items[0].volumeInfo.imageLinks.thumbnail : `./assets/book.svg`;
+  let previewLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.previewLink) ? bookImageObj.items[0].volumeInfo.previewLink : null;
   const bookElement = document.createElement('div');
-  
   bookElement.innerHTML = `<div class="bookelement">
   <div class="booktop">
       <div class="bookimage">
-          <img src=${imageLink}  alt="book" height="80%"  width="80%"  style="border-radius: 10px;">
+          <img src=${imageLink}  alt="book" height="80%"  width="80%"  style="border-radius: 10px;" ${previewLink?`onclick="window.open('${previewLink}','_blank');"`:''}>
       </div>
       <div class="smallinfo">
           <div class="title">

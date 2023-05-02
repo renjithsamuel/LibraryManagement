@@ -496,6 +496,7 @@ padding: 5px;
 }
 
 .bookimage{
+  cursor: pointer;
 background-color: transparent;
 display: flex;
 justify-content: center;
