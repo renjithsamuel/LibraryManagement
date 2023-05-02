@@ -176,37 +176,13 @@ async function createCard(book){
   // return bookElement;
 }
 
-
-function updateCard(bookElement, book) {
-  // Update title
-  bookElement.querySelector('.title').textContent = book.title;
-  
-  // Update author
-  bookElement.querySelector('.author').textContent = book.author;
-  
-  // Update publish date
-  const date = new Date(book.publishedDate);
-  const newdate = date.toLocaleDateString('en-US', {
-    day: 'numeric',month : 'short' , year: 'numeric'
-  });
-  bookElement.querySelector('.publishdate').textContent = newdate;
-  
-  // Update subject
-  bookElement.querySelector('.subject').textContent = book.subject;
-  
-  // Update description
-  bookElement.querySelector('.desc').innerHTML = `
-    <strong>Description:</strong><br>
-    ${book.desc}
-  `;
-}
-
 //to show and hide results count from search
 let showres = document.getElementById('showreswrapper');
 let searchfocus = document.getElementById('myInput');
 let bookswrapper = document.getElementById('book-list');
 
 searchfocus.addEventListener("focus", function() {
+  loading = true;
   showres.style.display = 'flex';
   setTimeout(() => {showres.classList.add('visible');}
   , 0);
@@ -214,8 +190,13 @@ searchfocus.addEventListener("focus", function() {
 });
 
 searchfocus.addEventListener("blur", function() {
-  if(!searchfocus.value) {showres.classList.remove('visible');
-  showres.style.display = 'none';}
+  if(!searchfocus.value)
+  {
+  showres.classList.remove('visible');
+  showres.style.display = 'none';
+  loading = false;
+  }
+  
 });
 
 
@@ -547,6 +528,8 @@ let allScrollFunctions = throttle(async (event) => {
     // console.log(window.scrollY);
     scrollFunction();
     if (!endOfBooks && window.innerHeight + window.scrollY  >= (document.body.offsetHeight - 30 ) && !loading ) {
+      console.log("Here!");
+      console.log(endOfBooks);
       page += 1;
     await fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then((res)=>{
           if(res.data.length==0){
