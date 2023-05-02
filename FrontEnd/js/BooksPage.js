@@ -348,15 +348,15 @@ document.getElementById('postbox').addEventListener('click', () => {
     whileadding = false;
   });
 
-  document.getElementById('dialog-box').addEventListener('click', (e) => {
-    // dialogBox.childNodes.forEach((node) => {
-    //   node.
-    // })
-    document.getElementById('dialog-box').remove();
-    enableScroll();
-    endOfBooks=false;
-    whileadding = false;
-  })
+  // document.getElementById('dialog-box').addEventListener('click', (e) => {
+  //   // dialogBox.childNodes.forEach((node) => {
+  //   //   node.
+  //   // })
+  //   document.getElementById('dialog-box').remove();
+  //   enableScroll();
+  //   endOfBooks=false;
+  //   whileadding = false;
+  // })
 });
 
 document.body.addEventListener('keydown', (e) => {
