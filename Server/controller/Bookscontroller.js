@@ -1,4 +1,5 @@
 const Books = require('../models/book');
+const axios = require('axios');
 //API HANDLERS
 // getting all books 
 exports.getBooks = async (req,res,next) => {
@@ -26,6 +27,14 @@ exports.getBooks = async (req,res,next) => {
             return res.status(400).send("Send correct values");
         }
         try{
+            
+            // let newPost = {
+            //     title : req.body.title, 
+            //     author : req.body.author,
+            //     subject : req.body.subject,
+            //     desc  : req.body.desc,
+            //     publishedDate : new Date(req.body.date),
+            // } 
         let books = await Books.collection.insertOne(req.body);
         if(!books){
             return res.status(400).json({
@@ -58,6 +67,7 @@ exports.getBooks = async (req,res,next) => {
         }
       
         try {
+
           let result = await Books.collection.insertMany(req.body);
           if (!result || result.insertedCount !== req.body.length) {
             return res.status(400).json({
@@ -113,7 +123,7 @@ exports.getBooks = async (req,res,next) => {
         try{
             let results = [] ;
             if(searchBy==='all'){
-                 resutls = await Books.find({
+                 results = await Books.find({
                 $or: [
                     { title: { $regex: searchText , $options : "i" } },
                     { author: { $regex: searchText, $options: "i" } },
@@ -124,7 +134,7 @@ exports.getBooks = async (req,res,next) => {
               });} 
               else{
                 if(searchBy==='title'){
-                     resutls = await Books.find({title:{$regex : searchText,$options : "i"}});
+                     results = await Books.find({title:{$regex : searchText,$options : "i"}});
                 }
                 else if(searchBy === 'author'){
                     console.log(searchBy);
@@ -140,12 +150,42 @@ exports.getBooks = async (req,res,next) => {
                      results = await Books.find({desc:{$regex:searchText , $options:"i"}});
                 }
               } 
-            return res.status(200).send(resutls);
+            return res.status(200).send(results);
         }catch(err){
             res.status(500).json({message:err.message});
         }
     }
 
+    // updateBooks with image and previeLink
+    exports.updateBookDetails = async (req,res,next) =>{
+        const {id, previewLink, imageLink} = req.body;
+
+        try{
+            let updatedData;
+             updatedData = await Books.findByIdAndUpdate(id,{
+                coverImage  :imageLink,
+                previewLink : previewLink
+            },{new:true});
+        
+            if(!updatedData){
+                return res.status(400).json({
+                    message : "something went wrong!",
+                    success : false
+                });
+            }
+            return res.status(200).json({
+                message : "data patched successfully!",
+                data : updatedData,
+                success:true
+            });
+        }catch(err){
+            console.log(err);
+            return res.status(500).json({
+                message: "Internal server error!  " + err.message,
+                success : false
+            });
+        }
+    }
 
 
     exports.loggerFunc = async (req,res,next) => {

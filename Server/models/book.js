@@ -5,7 +5,12 @@ const bookSchema = new mongoose.Schema({
   author: String,
   subject: String,
   publishedDate: String,
-  desc : String
+  desc : String,
+  previewLink:{
+    type: String,
+    default: ""
+  },
+  coverImage : String
 });
 
 const Books = mongoose.model('Books', bookSchema);

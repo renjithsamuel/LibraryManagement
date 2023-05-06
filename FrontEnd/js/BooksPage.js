@@ -20,11 +20,32 @@ const sendHttpRequest = async (method, url, data) => {
     body: JSON.stringify(data),
     })
     .then((response) => {
-     
-      returndata =  response.json()})
+      try{
+        document.getElementById("loadingText").remove();
+      }
+      catch(e){
+        
+      }
+      returndata =  response.json()}
+    )
+
     .catch((error) => {
       console.log("429 - Too Many Request Error - Not a Problem - Try Again Later - 👍");
-      // console.error("Error:", error);
+      let timebomb = 3;
+      let timeout;
+
+      timeout = setInterval(()=>{
+        if(timebomb>=0){
+          bookList.innerHTML = `<b>Server Down - Try Again in ${timebomb}</b>`
+          timebomb-=1;
+        }
+        else{
+          clearInterval(timeout);
+          bookList.innerHTML = `<b id="loadingText">Loading...</b>`
+          timebomb = 3;
+          fetchBooksPage(getAllBooksurl);
+        }
+      },1000)
     });
     return returndata;
 }
@@ -137,14 +158,33 @@ async function createCard(book){
       // newdate = day+" "+month+" "+year;
       
   }
+
+  let imageData , imageLink, previewLink;
+  if(!book.imageLink && !book.previewLink){
   let bookImageObj = await sendHttpRequest('GET' , `https://www.googleapis.com/books/v1/volumes?q=${book.title}`);
-  let imageLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.imageLinks.thumbnail) ? bookImageObj.items[0].volumeInfo.imageLinks.thumbnail : `./assets/book.svg`;
-  let previewLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.previewLink) ? bookImageObj.items[0].volumeInfo.previewLink : null;
+   imageLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.imageLinks.thumbnail) ? bookImageObj.items[0].volumeInfo.imageLinks.thumbnail : "";
+   previewLink = (bookImageObj.items && bookImageObj.items[0] && bookImageObj.items[0].volumeInfo &&bookImageObj.items[0].volumeInfo.imageLinks && bookImageObj.items[0].volumeInfo.previewLink) ? bookImageObj.items[0].volumeInfo.previewLink : "";
+    async  function updateBookDetails(){
+       imageData = await sendHttpRequest('PATCH',`https://librarymanagementnode.onrender.com/api/v1/books`,{
+          id : book._id,
+          imageLink : imageLink,
+          previewLink : previewLink,
+        }); 
+    }
+    updateBookDetails();
+    // imageLink = `data:image/jpeg;base64,${imageData.coverImage.toString('base64')}`;
+    // previewLink = 
+  }
+  else{
+      previewLink = book.previewLink;
+      imageLink =  book.coverImage;;
+  }
+  
   const bookElement = document.createElement('div');
   bookElement.innerHTML = `<div class="bookelement">
   <div class="booktop">
       <div class="bookimage">
-          <img src=${imageLink}  alt="book" height="80%"  width="80%"  style="border-radius: 10px;" ${previewLink?`onclick="window.open('${previewLink}','_blank');"`:''}>
+          <img src=${imageLink?imageLink:`./assets/book.svg`}  alt="book" height="80%"  width="80%"  style="border-radius: 10px;" ${previewLink?`onclick="window.open('${previewLink}','_blank');"`:''}>
       </div>
       <div class="smallinfo">
           <div class="title">
@@ -348,6 +388,7 @@ document.getElementById('postbox').addEventListener('click', () => {
     whileadding = false;
   });
 
+  // click outside the dialog box to exit add dialog box
   // document.getElementById('dialog-box').addEventListener('click', (e) => {
   //   // dialogBox.childNodes.forEach((node) => {
   //   //   node.
@@ -497,7 +538,7 @@ function debounce(cb,delay=1000){
       cb(...args);
     },delay);
   }
-}
+} 
 
 
 function throttle(cb,delay = 1000){
@@ -528,8 +569,6 @@ let allScrollFunctions = throttle(async (event) => {
     // console.log(window.scrollY);
     scrollFunction();
     if (!endOfBooks && window.innerHeight + window.scrollY  >= (document.body.offsetHeight - 30 ) && !loading ) {
-      console.log("Here!");
-      console.log(endOfBooks);
       page += 1;
     await fetchBooksPage(`https://librarymanagementnode.onrender.com/api/v1/booksPage?page=${page}&limit=10`).then((res)=>{
           if(res.data.length==0){
@@ -594,8 +633,6 @@ window.addEventListener('scroll',allScrollFunctions);
 // })
 
 // dont go below this
-
-
 //filter search results function - inefficient must switch to better way
 // const dropdownLinks = document.querySelectorAll('.filterforsearch .dropdown-content a');
 // let filterdropbtn  = document.querySelector('.filterforsearch .dropbtn');
